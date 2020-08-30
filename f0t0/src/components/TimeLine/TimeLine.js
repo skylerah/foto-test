@@ -12,6 +12,7 @@ class TimeLine extends Component {
       images: [],
       search: "",
       noImageMsg: "",
+      name: "",
     };
 
     this.search = this.search.bind(this);
@@ -22,6 +23,7 @@ class TimeLine extends Component {
     this.myImages = this.myImages.bind(this);
     this.searchImages = this.searchImages.bind(this);
     this.restorePhotos = this.restorePhotos.bind(this);
+    this.checkUserLoggedIn = this.checkUserLoggedIn.bind(this);
   }
 
   handleSearch(e) {
@@ -102,33 +104,49 @@ class TimeLine extends Component {
           noImageMsg: "",
         });
       } else {
+        console.log("no images");
         this.setState({
           noImageMsg: "You have no images! Upload one to view!",
         });
+        // this.restorePhotos();
       }
     });
   }
 
   restorePhotos() {
     axios.get("/photos").then((response) => {
-      this.setState({ images: response.data });
+      this.setState({ images: response.data, noImageMsg: "" });
     });
+  }
+
+  checkUserLoggedIn() {
+    axios
+      .get("/timeline")
+      .then((response) => {
+        const user = response.data.user;
+
+        console.log("tl user", user);
+        if (
+          typeof user === "undefined" ||
+          !user ||
+          Object.keys(user).length === 0
+        ) {
+          this.props.history.push("/");
+        } else {
+          console.log("tl user exists as ", user);
+          this.setState({ name: user.firstName + " " + user.lastName });
+        }
+      })
+      .catch((error) => console.log("log in error", error.message));
   }
 
   componentDidMount() {
-    axios.get("/timeline").then((response) => {
-      const user = response.data.user;
-      console.log("tl user", user);
-      if (!user || Object.keys(user).length === 0) {
-        this.props.history.push("/");
-      }
-    });
-    axios.get("/photos").then((response) => {
-      this.setState({ images: response.data });
-    });
+    this.checkUserLoggedIn();
+    this.restorePhotos();
   }
 
   render() {
+    this.checkUserLoggedIn();
     const images = this.state.images;
     console.log("images", this.state.images);
     return (
@@ -142,7 +160,7 @@ class TimeLine extends Component {
             <button className="navbar-link" onClick={this.myImages}>
               My Images
             </button>
-            <p className="name">Temisan Iwere</p>
+            {this.state.name && <p className="name">{this.state.name}</p>}
           </div>
           <div>
             <button className="navbar-link" onClick={this.logout}>

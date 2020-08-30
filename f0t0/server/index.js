@@ -1,22 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
-var indexController = require("./controllers/indexController");
-var uploadController = require("./controllers/uploadController");
-var timelineController = require("./controllers/timelineController");
-var mongoose = require("mongoose");
-var session = require("express-session");
-mongoose.connect(
-  "mongodb+srv://foto:foto@cluster0.5kmkd.mongodb.net/foto?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
+const indexController = require("./controllers/indexController");
+const uploadController = require("./controllers/uploadController");
+const timelineController = require("./controllers/timelineController");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const config = require("../config.json");
+mongoose.connect(config.mongoURI, { useNewUrlParser: true });
 const app = express();
 
 app.use(
   session({
     resave: false,
     saveUninitialized: true,
-    secret: "jvkfk",
+    secret: config.app_secret_hash_key,
     cookie: { secure: false },
   })
 );
@@ -27,12 +25,6 @@ app.use("/", indexController);
 app.use("/", uploadController);
 app.use("/", timelineController);
 
-app.get("/api/greeting", (req, res) => {
-  const name = req.query.name || "World";
-  res.setHeader("Content-Type", "application/json");
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
-
-app.listen(3001, () =>
+app.listen(config.server_port, () =>
   console.log("Express server is running on localhost:3001")
 );

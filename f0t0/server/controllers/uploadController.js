@@ -6,14 +6,13 @@ const express = require("express");
 const app = express();
 const crypto = require("crypto");
 const Grid = require("gridfs-stream");
-const mongoURI =
-  "mongodb+srv://foto:foto@cluster0.5kmkd.mongodb.net/foto?retryWrites=true&w=majority";
+const config = require("../../config.json");
 const Photo = require("../models/Photo");
 const User = require("../models/User");
 const path = require("path");
 
 //Create collection
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.createConnection(config.mongoURI);
 let gfs;
 
 conn.once("open", () => {
@@ -24,7 +23,7 @@ conn.once("open", () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-  url: mongoURI,
+  url: config.mongoURI,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
@@ -50,8 +49,10 @@ app.post("/upload", upload.single("img"), (req, res, err) => {
   res.json({ file: req.file });
 });
 
-app.get("/upload", (req, res, err) => {
-  res.json({ status: "upload page", user: req.session.user });
+app.get("/upload", (req, res) => {
+  const user = req.session.user;
+  // delete user.password;
+  res.json({ status: "upload page", user });
 });
 
 app.get("/files", (req, res) => {
@@ -153,8 +154,10 @@ app.get("/images/my-images", (req, res) => {
     if (err) {
       return res.status(400).json({ err: "Bad request" });
     }
-
-    return res.status(200).json({ userImages: user.images });
+    console.log("user images", user.images);
+    return res.status(200).json({
+      userImages: user.images,
+    });
   });
 });
 

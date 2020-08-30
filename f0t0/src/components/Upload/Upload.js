@@ -15,19 +15,29 @@ class Upload extends Component {
       caption: "",
       tags: [],
       user: {},
+      inputfile: [],
     };
 
     this.post = this.post.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.addTags = this.addTags.bind(this);
+    this.checkUserLoggedIn = this.checkUserLoggedIn.bind(this);
   }
 
   componentDidMount() {
+    this.checkUserLoggedIn();
+  }
+
+  checkUserLoggedIn() {
     axios.get("/upload").then((response) => {
       const user = response.data.user;
       console.log("user", user);
-      if (!user || Object.keys(user).length === 0) {
+      if (
+        typeof user === "undefined" ||
+        !user ||
+        Object.keys(user).length === 0
+      ) {
         this.props.history.push("/");
       }
     });
@@ -35,7 +45,7 @@ class Upload extends Component {
 
   post(e) {
     e.preventDefault();
-    const file = document.getElementById("inputGroupFile01").files;
+    const file = this.state.inputfile;
     const formData = new FormData();
 
     formData.append("img", file[0]);
@@ -62,13 +72,14 @@ class Upload extends Component {
         console.log(error);
       }
     );
-
-    console.log("file frontend", file[0]);
   }
 
   handleChange(e) {
     const filepath = e.target.value.split("\\");
-    this.setState({ filename: filepath[filepath.length - 1] });
+    this.setState({
+      filename: filepath[filepath.length - 1],
+      inputfile: e.target.files,
+    });
   }
 
   handleCaptionChange(e) {
@@ -81,6 +92,7 @@ class Upload extends Component {
     });
   }
   render() {
+    this.checkUserLoggedIn();
     return (
       <div>
         <nav className="navigation-bar-list">

@@ -12,6 +12,7 @@ class SignUp extends Component {
       lastName: "",
       email: "",
       password: "",
+      alreadyExists: false,
     };
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
@@ -50,10 +51,13 @@ class SignUp extends Component {
         console.log("response", response);
         if (response.data.status === "Success") {
           this.props.history.push("/timeline");
+        } else if (response.data.error === "exists") {
+          console.log("user already exists", response.data.error);
+          this.setState({ alreadyExists: true });
         }
       },
       (error) => {
-        console.log(error);
+        console.log(error.message);
       }
     );
   }
@@ -63,6 +67,12 @@ class SignUp extends Component {
         <div className="App">
           <div className="auth-wrapper">
             <div className="auth-inner">
+              {this.state.alreadyExists && (
+                <p className="alreadyExists">
+                  Account with that email already exists!{" "}
+                  <a href="/">sign in?</a>
+                </p>
+              )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign Up</h3>
 

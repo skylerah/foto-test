@@ -23,8 +23,12 @@ app.use(function (req, res, next) {
   }
 });
 
-app.get("/timeline", (req, res, err) => {
-  res.json({ status: "timeline page", user: req.session.user });
+app.get("/timeline", (req, res) => {
+  const user = req.session.user;
+  if (typeof user !== "undefined") {
+    user.password = "";
+  }
+  res.json({ status: "timeline page", user });
 });
 
 module.exports = app;
