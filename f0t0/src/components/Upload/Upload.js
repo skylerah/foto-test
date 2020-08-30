@@ -108,42 +108,48 @@ class Upload extends Component {
             </a>
           </div>
         </nav>
-        <form encType="multipart/form-data" onSubmit={this.post}>
-          <h1>Upload a picture</h1>
-          <div className="form-content">
-            <div className="custom-file">
-              <input
-                type="file"
-                className="custom-file-input input"
-                id="inputGroupFile01"
-                aria-describedby="inputGroupFileAddon01"
-                onChange={this.handleChange}
-              />
-              <label className="custom-file-label" htmlFor="inputGroupFile01">
-                {this.state.filename ? this.state.filename : "Choose File"}
-              </label>
-            </div>
-            <div>
-              <input
-                type="text"
-                onChange={this.handleCaptionChange}
-                value={this.state.caption}
-                className="input"
-                placeholder="Enter a caption for your image"
-              />
-            </div>
-            <div className="input">
-              <ReactTagInput
-                tags={this.state.tags}
-                onChange={(newTags) => this.addTags(newTags)}
-              />
-            </div>
-          </div>
+        <div className="upload-container">
+          <h2 class="upload-title">Upload a picture</h2>
+          <div className="form-container">
+            <form
+              encType="multipart/form-data"
+              onSubmit={this.post}
+              className="form-content"
+            >
+              <div className="custom-file inputfile-container">
+                <input
+                  type="file"
+                  className="custom-file-input input"
+                  id="inputGroupFile01"
+                  aria-describedby="inputGroupFileAddon01"
+                  onChange={this.handleChange}
+                />
+                <label className="custom-file-label" htmlFor="inputGroupFile01">
+                  {this.state.filename ? this.state.filename : "Choose File"}
+                </label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  onChange={this.handleCaptionChange}
+                  value={this.state.caption}
+                  className="caption-input"
+                  placeholder="Enter a caption for your image"
+                />
+              </div>
+              <div className="tag-input">
+                <ReactTagInput
+                  tags={this.state.tags}
+                  onChange={(newTags) => this.addTags(newTags)}
+                />
+              </div>
 
-          <button type="submit" className="btn btn-primary">
-            Upload
-          </button>
-        </form>
+              <button type="submit" className="upload-btn">
+                Upload
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

@@ -33,19 +33,54 @@
   text-decoration: none;
 }
 
-h1 {
-  text-align: center;
-}
 .form-content {
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
 
-.input {
+/* .input {
+  width: 60%;
+  background-color: black;
+} */
+
+.tag-input,
+.caption-input {
   width: 60%;
 }
 
-.custom-file {
-  width: 60%;
+.inputfile-container {
+  width: 60% !important;
+}
+
+.upload-title {
+  color: #fff;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.upload-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.upload-btn {
+  background-color: #474a48;
+  width: 10%;
+  border-radius: 1rem;
+  color: #fff;
+  text-align: center;
+  margin-top: 3rem;
+  align-self: center;
+}
+
+/* .custom-file-label {
+  background-color: black !important;
+} */
+
+.form-container {
+  display: block;
+  text-align: center;
 }

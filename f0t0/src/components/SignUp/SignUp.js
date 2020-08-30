@@ -125,7 +125,10 @@ class SignUp extends Component {
                 </button>
                 <Link className="nav-link" to={"/"}>
                   <p className="forgot-password text-right">
-                    Already registered <a href="/">sign in?</a>
+                    Already registered{" "}
+                    <a href="/" className="bottom-link">
+                      sign in?
+                    </a>
                   </p>
                 </Link>
               </form>

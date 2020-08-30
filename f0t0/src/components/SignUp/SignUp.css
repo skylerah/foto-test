@@ -81,10 +81,29 @@ html,
 }
 
 .forgot-password a {
-  color: #167bff;
+  color: #25664b;
+}
+
+.forgot-password a:hover {
+  color: #474a48;
 }
 
 .alreadyExists {
   margin-bottom: 2rem;
   color: red;
+}
+
+.bottom-link {
+  color: #25664b;
+}
+
+.bottom-link:hover {
+  color: #474a48;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #25664b !important;
 }
