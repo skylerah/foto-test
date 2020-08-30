@@ -1,0 +1,51 @@
+.navigation-bar-list {
+  display: flex;
+  justify-content: space-between;
+  /* flex-direction: column; */
+  background-color: white;
+  height: 3.5rem;
+  align-items: center;
+}
+
+.logout {
+  margin-right: 1rem;
+}
+.my-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 1rem;
+}
+.name {
+  margin-left: 1rem;
+  margin-bottom: 0px;
+}
+
+.navbar-link {
+  color: black;
+  margin-right: 1rem;
+  border: 0;
+  background-color: #fff;
+}
+
+.navbar-link:hover {
+  color: black;
+  text-decoration: none;
+}
+
+h1 {
+  text-align: center;
+}
+.form-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.input {
+  width: 60%;
+}
+
+.custom-file {
+  width: 60%;
+}

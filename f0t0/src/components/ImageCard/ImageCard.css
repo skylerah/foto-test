@@ -1,0 +1,21 @@
+.imgCard {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  width: 18rem;
+  box-sizing: border-box;
+}
+
+img {
+  width: 18rem;
+  height: 16rem;
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: 1rem;
+  height: 3rem;
+  text-align: center;
+}
