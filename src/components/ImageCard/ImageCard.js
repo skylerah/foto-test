@@ -14,11 +14,22 @@ const ImageCard = (props) => {
       </div>
       {props.tags.length > 0 && (
         <div>
-          {props.tags.map((tag) => (
-            <Button className="tagBtn" variant="secondary">
+          {props.tags.map((tag, index) => (
+            <Button className="tagBtn" variant="secondary" key={index}>
               {tag}
             </Button>
           ))}
+        </div>
+      )}
+      {props.ownerID === props.userID && (
+        <div>
+          <button
+            type="button"
+            className="btn btn-danger delete"
+            onClick={() => props.delete(props.photoID)}
+          >
+            Delete
+          </button>
         </div>
       )}
       <div className="shared-container">

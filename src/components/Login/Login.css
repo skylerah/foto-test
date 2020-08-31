@@ -86,3 +86,9 @@ html,
   display: flex;
   justify-content: space-between;
 }
+
+.login-error {
+  margin-bottom: 2rem;
+  color: red;
+  text-align: center;
+}

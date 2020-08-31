@@ -53,7 +53,7 @@ class Upload extends Component {
         data.caption = this.state.caption;
         data.tags = this.state.tags;
         axios.post("/photo", data).then(
-          (response) => {
+          () => {
             this.props.history.push("/timeline");
           },
           (error) => {
@@ -104,7 +104,7 @@ class Upload extends Component {
           </div>
         </nav>
         <div className="upload-container">
-          <h2 class="upload-title">Upload a picture</h2>
+          <h2 className="upload-title">Upload a picture</h2>
           <div className="form-container">
             <form
               encType="multipart/form-data"
@@ -130,7 +130,7 @@ class Upload extends Component {
                   value={this.state.caption}
                   className="caption-input"
                   placeholder="  Enter a caption for your image"
-                  maxlength="50"
+                  maxLength="50"
                 />
               </div>
               <div className="tag-input">

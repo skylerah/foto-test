@@ -13,6 +13,8 @@ class TimeLine extends Component {
       search: "",
       noImageMsg: "",
       name: "",
+      userID: "",
+      myImagesPage: false,
     };
   }
 
@@ -82,28 +84,26 @@ class TimeLine extends Component {
   };
 
   myImages = () => {
-    this.restorePhotos();
-    if (this.state.images.length > 0) {
-      this.setState({
-        noImageMsg: "You have no images! Upload one to view!",
-      });
-    }
     axios.get("/images/my-images").then((response) => {
-      const images = this.state.images;
-      if (response.data.userImages.length > 0) {
-        const userImages = response.data.userImages;
-        const filteredImages = images.filter(
-          this.searchImages.bind(this, userImages)
-        );
-        this.setState({
-          images: filteredImages,
-          noImageMsg: "",
-        });
-      } else {
-        this.setState({
-          noImageMsg: "You have no images! Upload one to view!",
-        });
-      }
+      axios.get("/photos").then((photoResponse) => {
+        const images = photoResponse.data;
+        if (response.data.userImages.length > 0) {
+          const userImages = response.data.userImages;
+          const filteredImages = images.filter(
+            this.searchImages.bind(this, userImages)
+          );
+          this.setState({
+            images: filteredImages,
+            noImageMsg: "",
+            myImages: true,
+          });
+        } else {
+          this.setState({
+            noImageMsg: "You have no images! Upload one to view!",
+            myImages: true,
+          });
+        }
+      });
     });
   };
 
@@ -114,16 +114,15 @@ class TimeLine extends Component {
         this.setState({
           images: userImages,
           noImageMsg: "",
+          myImages: true,
         });
-      } else {
-        console.log("no images");
       }
     });
   };
 
   restorePhotos = () => {
     axios.get("/photos").then((response) => {
-      this.setState({ images: response.data, noImageMsg: "" });
+      this.setState({ images: response.data, noImageMsg: "", myImages: false });
     });
   };
 
@@ -139,10 +138,22 @@ class TimeLine extends Component {
         ) {
           this.props.history.push("/");
         } else {
-          this.setState({ name: user.firstName + " " + user.lastName });
+          this.setState({
+            name: user.firstName + " " + user.lastName,
+            userID: user._id,
+          });
         }
       })
       .catch((error) => console.log("log in error", error.message));
+  };
+
+  deleteImage = (id) => {
+    axios
+      .delete("/image/" + id)
+      .then((response) => {
+        this.restorePhotos();
+      })
+      .catch((error) => console.log("delete error", error.message));
   };
 
   componentDidMount() {
@@ -159,7 +170,6 @@ class TimeLine extends Component {
             <button className="navbar-link" onClick={this.restorePhotos}>
               Home
             </button>
-
             <button className="navbar-link" onClick={this.myImages}>
               My Images
             </button>
@@ -175,21 +185,23 @@ class TimeLine extends Component {
           {this.state.noImageMsg.length > 0 && (
             <p className="noImgMsg">{this.state.noImageMsg}</p>
           )}
-          <div className="search-container">
-            <input
-              type="text"
-              onChange={this.handleSearch}
-              value={this.state.search}
-              placeholder="Search by tag or caption"
-              className="search-input"
-            />
-            <button className="action-button" onClick={this.search}>
-              Search
-            </button>
-            <Link to={"/upload"}>
-              <button className="action-button">Upload</button>
-            </Link>
-          </div>
+          {!this.state.myImages && (
+            <div className="search-container">
+              <input
+                type="text"
+                onChange={this.handleSearch}
+                value={this.state.search}
+                placeholder="Search by tag or caption"
+                className="search-input"
+              />
+              <button className="action-button" onClick={this.search}>
+                Search
+              </button>
+              <Link to={"/upload"}>
+                <button className="action-button">Upload</button>
+              </Link>
+            </div>
+          )}
 
           <div className="image-container">
             {images.map((file, index) => {
@@ -200,7 +212,11 @@ class TimeLine extends Component {
                   key={index}
                   tags={file.tags}
                   ownerName={file.ownerName}
+                  ownerID={file.ownerID}
+                  userID={this.state.userID}
+                  photoID={file.id}
                   userImage={() => this.getUserImage(file.ownerID)}
+                  delete={this.deleteImage}
                 />
               );
             })}

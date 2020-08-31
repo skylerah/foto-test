@@ -44,7 +44,9 @@ app.post("/signup", (req, res) => {
 app.post("/login", function (req, res) {
   User.findOne({ email: req.body.email }, function (err, user) {
     if (!user) {
-      res.status(404).send({ error: "Invalid username or password" });
+      res
+        .status(200)
+        .send({ message: "Account with that email doesnt exist!" });
     } else {
       bcrypt.compare(req.body.password, user.password, function (
         err,
@@ -59,8 +61,8 @@ app.post("/login", function (req, res) {
           });
         } else {
           res
-            .status(400)
-            .send({ message: "Invalid username or password", error: err });
+            .status(200)
+            .send({ message: "Invalid username or password!", error: err });
         }
       });
     }

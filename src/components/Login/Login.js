@@ -12,6 +12,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      error: "",
     };
   }
 
@@ -33,6 +34,10 @@ class Login extends Component {
       (response) => {
         if (response.data.status === "Success") {
           this.props.history.push("/timeline");
+        } else if (response.data.message.length > 0) {
+          this.setState({
+            error: response.data.message,
+          });
         }
       },
       (error) => {
@@ -47,6 +52,9 @@ class Login extends Component {
         <div className="App">
           <div className="auth-wrapper">
             <div className="auth-inner">
+              {this.state.error.length > 0 && (
+                <p className="login-error">{this.state.error}</p>
+              )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign In</h3>
 

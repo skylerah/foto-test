@@ -172,4 +172,46 @@ app.get("/images/:id", (req, res) => {
   });
 });
 
+app.delete("/image/:id", (req, res) => {
+  gfs.remove({ _id: req.params.id, root: "uploads" }, (err, gridStore) => {
+    if (err) {
+      return res.status(404).json({ err: "image not found" });
+    }
+    Photo.findOneAndDelete({ id: req.params.id }, function (err, photo) {
+      if (err) {
+        return res.status(400).json({ err: "Photo not found" });
+      }
+
+      const userID = photo.ownerID;
+      const filename = photo.filename;
+      console.log("filename to be deleted", filename);
+      User.findOne({ _id: userID }, function (err, user) {
+        if (err) {
+          return res.status(400).json({ err: "Bad request" });
+        }
+        const images = user.images;
+        const newImages = images.filter(function (image) {
+          return image !== filename;
+        });
+        console.log("former images", images);
+        console.log("images after filter", newImages);
+        User.findOneAndUpdate({ _id: userID }, { images: newImages }, function (
+          err,
+          updatedUser
+        ) {
+          if (err) {
+            return res.status(400).json({ err: "Bad request" });
+          }
+          const userDeleted = updatedUser;
+          userDeleted["password"] = "";
+          return res.status(200).json({
+            status: "Successfully deleted!",
+            photo: photo,
+            user: userDeleted,
+          });
+        });
+      });
+    });
+  });
+});
 module.exports = app;
