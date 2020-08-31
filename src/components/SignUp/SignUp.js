@@ -14,30 +14,25 @@ class SignUp extends Component {
       password: "",
       alreadyExists: false,
     };
-    this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
-    this.handleLastNameChange = this.handleLastNameChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleFirstNameChange(event) {
+  handleFirstNameChange = (event) => {
     this.setState({ firstName: event.target.value });
-  }
+  };
 
-  handleLastNameChange(event) {
+  handleLastNameChange = (event) => {
     this.setState({ lastName: event.target.value });
-  }
+  };
 
-  handleEmailChange(event) {
+  handleEmailChange = (event) => {
     this.setState({ email: event.target.value });
-  }
+  };
 
-  handlePasswordChange(event) {
+  handlePasswordChange = (event) => {
     this.setState({ password: event.target.value });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const body = {
       firstName: this.state.firstName,
@@ -48,11 +43,9 @@ class SignUp extends Component {
 
     axios.post("/signup", body).then(
       (response) => {
-        console.log("response", response);
         if (response.data.status === "Success") {
           this.props.history.push("/timeline");
         } else if (response.data.error === "exists") {
-          console.log("user already exists", response.data.error);
           this.setState({ alreadyExists: true });
         }
       },
@@ -60,7 +53,7 @@ class SignUp extends Component {
         console.log(error.message);
       }
     );
-  }
+  };
   render() {
     return (
       <div>

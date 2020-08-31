@@ -13,21 +13,17 @@ class Login extends Component {
       email: "",
       password: "",
     };
-
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleEmailChange(event) {
+  handleEmailChange = (event) => {
     this.setState({ email: event.target.value });
-  }
+  };
 
-  handlePasswordChange(event) {
+  handlePasswordChange = (event) => {
     this.setState({ password: event.target.value });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const body = {
       email: this.state.email,
@@ -35,9 +31,6 @@ class Login extends Component {
     };
     axios.post("/login", body).then(
       (response) => {
-        // this.props.updateName("hello");
-        console.log("name from store", this.props.name);
-        console.log("login response", response);
         if (response.data.status === "Success") {
           this.props.history.push("/timeline");
         }
@@ -46,7 +39,7 @@ class Login extends Component {
         console.log(error);
       }
     );
-  }
+  };
 
   render() {
     return (

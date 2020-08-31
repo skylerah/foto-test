@@ -46,11 +46,18 @@
 
 .tag-input,
 .caption-input {
-  width: 60%;
+  width: 40%;
+  color: #474a48 !important;
+}
+
+.tag-input {
+  align-self: center;
+  margin-top: 0.7rem;
 }
 
 .inputfile-container {
-  width: 60% !important;
+  width: 40% !important;
+  align-self: center;
 }
 
 .upload-title {
@@ -76,11 +83,15 @@
   align-self: center;
 }
 
-/* .custom-file-label {
-  background-color: black !important;
-} */
+.custom-file-label {
+  text-align: left;
+}
 
 .form-container {
   display: block;
   text-align: center;
+}
+
+.caption-container {
+  margin-top: 0.7rem;
 }

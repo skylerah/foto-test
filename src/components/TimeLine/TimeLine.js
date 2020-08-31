@@ -14,26 +14,16 @@ class TimeLine extends Component {
       noImageMsg: "",
       name: "",
     };
-
-    this.search = this.search.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-    this.mergeArrays = this.mergeArrays.bind(this);
-    this.searchTags = this.searchTags.bind(this);
-    this.logout = this.logout.bind(this);
-    this.myImages = this.myImages.bind(this);
-    this.searchImages = this.searchImages.bind(this);
-    this.restorePhotos = this.restorePhotos.bind(this);
-    this.checkUserLoggedIn = this.checkUserLoggedIn.bind(this);
   }
 
-  handleSearch(e) {
+  handleSearch = (e) => {
     this.setState({
       search: e.target.value,
     });
     this.search();
-  }
+  };
 
-  mergeArrays(array1, array2) {
+  mergeArrays = (array1, array2) => {
     var result = array1;
     for (var i = 0; i < array2.length; i++) {
       if (result.indexOf(array2[i]) < 0) {
@@ -41,9 +31,9 @@ class TimeLine extends Component {
       }
     }
     return result;
-  }
+  };
 
-  search() {
+  search = () => {
     axios.get("/photos").then((response) => {
       const images = response.data;
       const caption = this.state.search;
@@ -63,35 +53,41 @@ class TimeLine extends Component {
         images: searchResults,
       });
     });
-  }
+  };
 
-  searchTags(caption, image) {
+  searchTags = (caption, image) => {
     for (let i = 0; i < image.tags.length; i++) {
       if (image.tags[i].includes(caption) || caption.includes(image.tags[i])) {
         return true;
       }
     }
     return false;
-  }
+  };
 
-  searchImages(userImages, image) {
+  searchImages = (userImages, image) => {
     for (let i = 0; i < userImages.length; i++) {
       if (image.filename === userImages[i]) {
         return true;
       }
     }
     return false;
-  }
+  };
 
-  logout() {
+  logout = () => {
     axios.get("/logout").then((response) => {
       if (response.data.message === "Success") {
         this.props.history.push("/");
       }
     });
-  }
+  };
 
-  myImages() {
+  myImages = () => {
+    this.restorePhotos();
+    if (this.state.images.length > 0) {
+      this.setState({
+        noImageMsg: "You have no images! Upload one to view!",
+      });
+    }
     axios.get("/images/my-images").then((response) => {
       const images = this.state.images;
       if (response.data.userImages.length > 0) {
@@ -104,28 +100,38 @@ class TimeLine extends Component {
           noImageMsg: "",
         });
       } else {
-        console.log("no images");
         this.setState({
           noImageMsg: "You have no images! Upload one to view!",
         });
-        // this.restorePhotos();
       }
     });
-  }
+  };
 
-  restorePhotos() {
+  getUserImage = (id) => {
+    axios.get("/images/" + id).then((response) => {
+      if (response.data.userImages.length > 0) {
+        const userImages = response.data.userImages;
+        this.setState({
+          images: userImages,
+          noImageMsg: "",
+        });
+      } else {
+        console.log("no images");
+      }
+    });
+  };
+
+  restorePhotos = () => {
     axios.get("/photos").then((response) => {
       this.setState({ images: response.data, noImageMsg: "" });
     });
-  }
+  };
 
-  checkUserLoggedIn() {
+  checkUserLoggedIn = () => {
     axios
       .get("/timeline")
       .then((response) => {
         const user = response.data.user;
-
-        console.log("tl user", user);
         if (
           typeof user === "undefined" ||
           !user ||
@@ -133,12 +139,11 @@ class TimeLine extends Component {
         ) {
           this.props.history.push("/");
         } else {
-          console.log("tl user exists as ", user);
           this.setState({ name: user.firstName + " " + user.lastName });
         }
       })
       .catch((error) => console.log("log in error", error.message));
-  }
+  };
 
   componentDidMount() {
     this.checkUserLoggedIn();
@@ -146,9 +151,7 @@ class TimeLine extends Component {
   }
 
   render() {
-    this.checkUserLoggedIn();
     const images = this.state.images;
-    console.log("images", this.state.images);
     return (
       <div>
         <nav className="navigation-bar-list">
@@ -189,13 +192,18 @@ class TimeLine extends Component {
           </div>
 
           <div className="image-container">
-            {images.map((file, index) => (
-              <ImageCard
-                src={"/image/" + file.filename}
-                caption={file.caption}
-                key={file.id}
-              />
-            ))}
+            {images.map((file, index) => {
+              return (
+                <ImageCard
+                  src={"/image/" + file.filename}
+                  caption={file.caption}
+                  key={index}
+                  tags={file.tags}
+                  ownerName={file.ownerName}
+                  userImage={() => this.getUserImage(file.ownerID)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

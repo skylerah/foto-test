@@ -45,7 +45,6 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 app.post("/upload", upload.single("img"), (req, res, err) => {
-  console.log("file", req.body);
   res.json({ file: req.file });
 });
 
@@ -111,6 +110,8 @@ app.post("/photo", (req, res) => {
     contentType: req.body.contentType,
     caption: req.body.caption,
     tags: req.body.tags,
+    ownerName: req.session.user.firstName + " " + req.session.user.lastName,
+    ownerID: req.session.user._id,
   });
 
   res.setHeader("Content-Type", "application/json");
@@ -154,9 +155,19 @@ app.get("/images/my-images", (req, res) => {
     if (err) {
       return res.status(400).json({ err: "Bad request" });
     }
-    console.log("user images", user.images);
     return res.status(200).json({
       userImages: user.images,
+    });
+  });
+});
+
+app.get("/images/:id", (req, res) => {
+  Photo.find({ ownerID: req.params.id }, function (err, photos) {
+    if (err) {
+      return res.status(400).json({ err: "user not found" });
+    }
+    return res.status(200).json({
+      userImages: photos,
     });
   });
 });

@@ -16,34 +16,30 @@ class Upload extends Component {
       tags: [],
       user: {},
       inputfile: [],
+      name: "",
     };
-
-    this.post = this.post.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleCaptionChange = this.handleCaptionChange.bind(this);
-    this.addTags = this.addTags.bind(this);
-    this.checkUserLoggedIn = this.checkUserLoggedIn.bind(this);
   }
 
   componentDidMount() {
     this.checkUserLoggedIn();
   }
 
-  checkUserLoggedIn() {
+  checkUserLoggedIn = () => {
     axios.get("/upload").then((response) => {
       const user = response.data.user;
-      console.log("user", user);
       if (
         typeof user === "undefined" ||
         !user ||
         Object.keys(user).length === 0
       ) {
         this.props.history.push("/");
+      } else {
+        this.setState({ name: user.firstName + " " + user.lastName });
       }
     });
-  }
+  };
 
-  post(e) {
+  post = (e) => {
     e.preventDefault();
     const file = this.state.inputfile;
     const formData = new FormData();
@@ -52,15 +48,12 @@ class Upload extends Component {
 
     axios.post("/upload", formData).then(
       (response) => {
-        console.log("res", response.data.file);
         this.setState({ file: response.data.file });
         const data = this.state.file;
         data.caption = this.state.caption;
         data.tags = this.state.tags;
-        console.log("photo data", data);
         axios.post("/photo", data).then(
           (response) => {
-            console.log("photo res", response);
             this.props.history.push("/timeline");
           },
           (error) => {
@@ -72,25 +65,25 @@ class Upload extends Component {
         console.log(error);
       }
     );
-  }
+  };
 
-  handleChange(e) {
+  handleChange = (e) => {
     const filepath = e.target.value.split("\\");
     this.setState({
       filename: filepath[filepath.length - 1],
       inputfile: e.target.files,
     });
-  }
+  };
 
-  handleCaptionChange(e) {
+  handleCaptionChange = (e) => {
     this.setState({ caption: e.target.value });
-  }
+  };
 
-  addTags(tags) {
+  addTags = (tags) => {
     this.setState({
       tags,
     });
-  }
+  };
   render() {
     this.checkUserLoggedIn();
     return (
@@ -100,7 +93,9 @@ class Upload extends Component {
             <Link to={"/timeline"}>
               <button className="navbar-link">Home</button>
             </Link>
-            <p className="name">Temisan Iwere</p>
+            {this.state.name.length > 0 && (
+              <p className="name">{this.state.name}</p>
+            )}
           </div>
           <div>
             <a className="logout navbar-link" href="/">
@@ -128,19 +123,22 @@ class Upload extends Component {
                   {this.state.filename ? this.state.filename : "Choose File"}
                 </label>
               </div>
-              <div>
+              <div className="caption-container">
                 <input
                   type="text"
                   onChange={this.handleCaptionChange}
                   value={this.state.caption}
                   className="caption-input"
-                  placeholder="Enter a caption for your image"
+                  placeholder="  Enter a caption for your image"
+                  maxlength="50"
                 />
               </div>
               <div className="tag-input">
                 <ReactTagInput
+                  placeholder="Enter tags to categorize/describe your image"
                   tags={this.state.tags}
                   onChange={(newTags) => this.addTags(newTags)}
+                  maxTags={5}
                 />
               </div>
 

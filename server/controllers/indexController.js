@@ -8,10 +8,8 @@ app.use(pino);
 app.use(express.json());
 
 app.post("/signup", (req, res) => {
-  console.log("body", req.body);
   User.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
-      console.log("already exists");
       return res.status(200).json({ error: "exists" });
     } else {
       const newUser = new User({
@@ -34,7 +32,6 @@ app.post("/signup", (req, res) => {
               error = "Sucess";
               req.session.user = newUser;
               req.session.user["password"] = "";
-              console.log("session user signup", req.session.user);
               res.status(200).json({ status: error });
             }
           });
@@ -56,7 +53,6 @@ app.post("/login", function (req, res) {
         if (response === true) {
           req.session.user = user;
           req.session.user["password"] = "";
-          console.log("session user login", req.session.user);
           res.status(200).json({
             status: "Success",
             name: user.firstName + " " + user.lastName,
