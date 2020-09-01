@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../store/actions";
 import PropTypes from "prop-types";
+import logo from "../../assets/images/logoBlack.png";
 
 class SignUp extends Component {
   constructor() {
@@ -48,6 +49,7 @@ class SignUp extends Component {
       <div>
         <div className="App">
           <div className="auth-wrapper">
+            <img className="logo-black" src={logo} alt="logo" />
             <div className="auth-inner">
               {this.props.reducer.error && (
                 <p className="alreadyExists">

@@ -108,3 +108,10 @@ html,
 .btn-primary:visited {
   background-color: #25664b !important;
 }
+
+.logo-black {
+  width: 30rem;
+  height: 4rem;
+  align-self: center;
+  margin-bottom: 0rem;
+}
