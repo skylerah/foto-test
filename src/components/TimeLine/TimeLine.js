@@ -3,6 +3,9 @@ import "../TimeLine/TimeLine.css";
 import ImageCard from "../ImageCard/ImageCard";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../store/actions";
 
 class TimeLine extends Component {
   constructor() {
@@ -12,10 +15,16 @@ class TimeLine extends Component {
       images: [],
       search: "",
       noImageMsg: "",
-      name: "",
-      userID: "",
       myImagesPage: false,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
+    ) {
+      this.props.history.push("/");
+    }
   }
 
   handleSearch = (e) => {
@@ -36,6 +45,7 @@ class TimeLine extends Component {
   };
 
   search = () => {
+    console.log("user is", this.props.reducer.user);
     axios.get("/photos").then((response) => {
       const images = response.data;
       const caption = this.state.search;
@@ -76,18 +86,18 @@ class TimeLine extends Component {
   };
 
   logout = () => {
-    axios.get("/logout").then((response) => {
-      if (response.data.message === "Success") {
-        this.props.history.push("/");
-      }
-    });
+    this.props.logoutUser();
   };
 
   myImages = () => {
-    axios.get("/images/my-images").then((response) => {
+    const body = {
+      email: this.props.reducer.user.email,
+    };
+    axios.post("/images/my-images", body).then((response) => {
       axios.get("/photos").then((photoResponse) => {
         const images = photoResponse.data;
         if (response.data.userImages.length > 0) {
+          console.log("here");
           const userImages = response.data.userImages;
           const filteredImages = images.filter(
             this.searchImages.bind(this, userImages)
@@ -101,7 +111,9 @@ class TimeLine extends Component {
           this.setState({
             noImageMsg: "You have no images! Upload one to view!",
             myImages: true,
+            images: [],
           });
+          console.log("msg", this.state.noImageMsg);
         }
       });
     });
@@ -126,38 +138,16 @@ class TimeLine extends Component {
     });
   };
 
-  checkUserLoggedIn = () => {
-    axios
-      .get("/timeline")
-      .then((response) => {
-        const user = response.data.user;
-        if (
-          typeof user === "undefined" ||
-          !user ||
-          Object.keys(user).length === 0
-        ) {
-          this.props.history.push("/");
-        } else {
-          this.setState({
-            name: user.firstName + " " + user.lastName,
-            userID: user._id,
-          });
-        }
-      })
-      .catch((error) => console.log("log in error", error.message));
-  };
-
   deleteImage = (id) => {
     axios
       .delete("/image/" + id)
-      .then((response) => {
+      .then(() => {
         this.restorePhotos();
       })
       .catch((error) => console.log("delete error", error.message));
   };
 
   componentDidMount() {
-    this.checkUserLoggedIn();
     this.restorePhotos();
   }
 
@@ -173,7 +163,9 @@ class TimeLine extends Component {
             <button className="navbar-link" onClick={this.myImages}>
               My Images
             </button>
-            {this.state.name && <p className="name">{this.state.name}</p>}
+            {this.props.reducer.user.name && (
+              <p className="name">{this.props.reducer.user.name}</p>
+            )}
           </div>
           <div>
             <button className="navbar-link" onClick={this.logout}>
@@ -213,7 +205,7 @@ class TimeLine extends Component {
                   tags={file.tags}
                   ownerName={file.ownerName}
                   ownerID={file.ownerID}
-                  userID={this.state.userID}
+                  userID={this.props.reducer.user.id}
                   photoID={file.id}
                   userImage={() => this.getUserImage(file.ownerID)}
                   delete={this.deleteImage}
@@ -227,4 +219,13 @@ class TimeLine extends Component {
   }
 }
 
-export default withRouter(TimeLine);
+const mapStateToProps = (state) => ({
+  reducer: state,
+});
+
+TimeLine.propTypes = {
+  reducer: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+};
+
+export default withRouter(connect(mapStateToProps, { logoutUser })(TimeLine));

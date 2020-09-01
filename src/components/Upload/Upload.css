@@ -1,7 +1,6 @@
 .navigation-bar-list {
   display: flex;
   justify-content: space-between;
-  /* flex-direction: column; */
   background-color: white;
   height: 3.5rem;
   align-items: center;
@@ -39,11 +38,6 @@
   flex-direction: column;
 }
 
-/* .input {
-  width: 60%;
-  background-color: black;
-} */
-
 .tag-input,
 .caption-input {
   width: 40%;
@@ -74,7 +68,7 @@
 }
 
 .upload-btn {
-  background-color: #474a48;
+  background-color: black;
   width: 10%;
   border-radius: 1rem;
   color: #fff;
@@ -94,4 +88,11 @@
 
 .caption-container {
   margin-top: 0.7rem;
+}
+
+.upload-error {
+  color: red;
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.5rem;
 }

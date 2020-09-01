@@ -85,12 +85,13 @@ html,
 }
 
 .forgot-password a:hover {
-  color: #474a48;
+  color: black;
 }
 
 .alreadyExists {
   margin-bottom: 2rem;
   color: red;
+  text-align: center;
 }
 
 .bottom-link {
@@ -98,7 +99,7 @@ html,
 }
 
 .bottom-link:hover {
-  color: #474a48;
+  color: black;
 }
 
 .btn-primary,

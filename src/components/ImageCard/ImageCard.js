@@ -21,24 +21,26 @@ const ImageCard = (props) => {
           ))}
         </div>
       )}
-      {props.ownerID === props.userID && (
-        <div>
-          <button
-            type="button"
-            className="btn btn-danger delete"
-            onClick={() => props.delete(props.photoID)}
-          >
-            Delete
+      <div className="img-footer">
+        {props.ownerID === props.userID && (
+          <div>
+            <button
+              type="button"
+              className="btn btn-danger delete"
+              onClick={() => props.delete(props.photoID)}
+            >
+              Delete
+            </button>
+          </div>
+        )}
+        <div className="shared-container">
+          <p className="shared-text">shared by</p>
+          <button className="imgcardBtn" onClick={props.userImage}>
+            <p>{props.ownerName}</p>
           </button>
         </div>
-      )}
-      <div className="shared-container">
-        <p className="shared-text">shared by</p>
-        <button className="imgcardBtn" onClick={props.userImage}>
-          <p>{props.ownerName}</p>
-        </button>
+        {/* </div> */}
       </div>
-      {/* </div> */}
     </div>
   );
 };

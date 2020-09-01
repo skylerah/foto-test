@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "../Login/Login.css";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { updateName } from "../../store/actions";
+import { loginUser } from "../../store/actions";
+import PropTypes from "prop-types";
 
 class Login extends Component {
   constructor() {
@@ -12,16 +12,22 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      error: "",
     };
   }
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.push("/timeline");
+    }
+  }
 
-  handleEmailChange = (event) => {
-    this.setState({ email: event.target.value });
-  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isAuthenticated) {
+      this.props.history.push("/timeline"); // push user to dashboard when they login
+    }
+  }
 
-  handlePasswordChange = (event) => {
-    this.setState({ password: event.target.value });
+  handleChange = (event, key) => {
+    this.setState({ [key]: event.target.value });
   };
 
   handleSubmit = (e) => {
@@ -30,20 +36,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    axios.post("/login", body).then(
-      (response) => {
-        if (response.data.status === "Success") {
-          this.props.history.push("/timeline");
-        } else if (response.data.message.length > 0) {
-          this.setState({
-            error: response.data.message,
-          });
-        }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.props.loginUser(body);
   };
 
   render() {
@@ -52,8 +45,8 @@ class Login extends Component {
         <div className="App">
           <div className="auth-wrapper">
             <div className="auth-inner">
-              {this.state.error.length > 0 && (
-                <p className="login-error">{this.state.error}</p>
+              {this.props.error.length > 0 && (
+                <p className="login-error">{this.props.error}</p>
               )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign In</h3>
@@ -64,7 +57,7 @@ class Login extends Component {
                     type="email"
                     className="form-control"
                     placeholder="Enter email"
-                    onChange={this.handleEmailChange}
+                    onChange={(e) => this.handleChange(e, "email")}
                     value={this.state.email}
                   />
                 </div>
@@ -75,7 +68,7 @@ class Login extends Component {
                     type="password"
                     className="form-control"
                     placeholder="Enter password"
-                    onChange={this.handlePasswordChange}
+                    onChange={(e) => this.handleChange(e, "password")}
                     value={this.state.password}
                   />
                 </div>
@@ -116,12 +109,15 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state /*, ownProps*/) => {
-  return {
-    name: state.name,
-  };
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.isAuthenticated,
+  error: state.error,
+});
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = { updateName };
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps, { loginUser })(Login));

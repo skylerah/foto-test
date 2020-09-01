@@ -2,6 +2,8 @@ const express = require("express");
 const pino = require("express-pino-logger")();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys.json");
 
 const app = express();
 app.use(pino);
@@ -10,7 +12,9 @@ app.use(express.json());
 app.post("/signup", (req, res) => {
   User.findOne({ email: req.body.email }, function (err, user) {
     if (user) {
-      return res.status(200).json({ error: "exists" });
+      return res
+        .status(400)
+        .json({ message: "Account with that email already exists!" });
     } else {
       const newUser = new User({
         firstName: req.body.firstName,
@@ -27,12 +31,31 @@ app.post("/signup", (req, res) => {
           newUser.save(function (err) {
             if (err) {
               var error = "Oops something bad happened! Try again";
-              res.status(400).send(error);
+              res.status(500).send({ message: error });
             } else {
-              error = "Sucess";
-              req.session.user = newUser;
-              req.session.user["password"] = "";
-              res.status(200).json({ status: error });
+              User.findOne({ email: newUser.email }, function (
+                err,
+                updatedUser
+              ) {
+                const payload = {
+                  id: updatedUser._id,
+                  name: updatedUser.firstName + " " + updatedUser.lastName,
+                  email: updatedUser.email,
+                };
+                jwt.sign(
+                  payload,
+                  keys.secretOrKey,
+                  {
+                    expiresIn: "24h", // 1 year in seconds
+                  },
+                  (err, token) => {
+                    res.json({
+                      success: true,
+                      token: "Bearer " + token,
+                    });
+                  }
+                );
+              });
             }
           });
         });
@@ -44,37 +67,40 @@ app.post("/signup", (req, res) => {
 app.post("/login", function (req, res) {
   User.findOne({ email: req.body.email }, function (err, user) {
     if (!user) {
-      res
-        .status(200)
-        .send({ message: "Account with that email doesnt exist!" });
+      return res
+        .status(400)
+        .json({ message: "Account with that email doesnt exist!" });
     } else {
       bcrypt.compare(req.body.password, user.password, function (
         err,
         response
       ) {
-        if (response === true) {
-          req.session.user = user;
-          req.session.user["password"] = "";
-          res.status(200).json({
-            status: "Success",
+        if (response) {
+          const payload = {
+            id: user._id,
             name: user.firstName + " " + user.lastName,
-          });
+            email: user.email,
+          };
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            {
+              expiresIn: "24h", // 1 year in seconds
+            },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: "Bearer " + token,
+              });
+            }
+          );
         } else {
-          res
-            .status(200)
-            .send({ message: "Invalid username or password!", error: err });
+          return res
+            .status(400)
+            .json({ message: "Invalid username or password!", error: err });
         }
       });
     }
-  });
-});
-
-app.get("/logout", function (req, res) {
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(400).json({ error: "logout unsuccessful" });
-    }
-    res.status(200).json({ message: "Success" });
   });
 });
 module.exports = app;

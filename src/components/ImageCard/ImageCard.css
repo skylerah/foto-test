@@ -13,6 +13,7 @@ img {
   width: 18rem;
   height: 18rem;
   object-fit: cover;
+  border-radius: 1rem 1rem 0 0;
 }
 
 .caption {
@@ -36,7 +37,7 @@ img {
 }
 
 .profile-link:hover {
-  color: #474a48;
+  color: black;
 }
 
 .shared-text {
@@ -45,7 +46,7 @@ img {
 }
 
 .shared-container {
-  margin-top: 3rem;
+  margin-top: 0.5rem;
   margin-right: 0.7rem;
   display: flex;
   justify-content: flex-end;
@@ -54,8 +55,22 @@ img {
 .imgcardBtn {
   background: none;
   border: none;
+  color: #25664b;
 }
 
-/* .delete {
+.imgcardBtn:hover {
+  color: black;
+}
 
-} */
+.delete {
+  background-color: black !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  margin-left: 0.5rem;
+}
+
+.img-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4.5rem;
+}

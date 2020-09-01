@@ -1,15 +1,5 @@
-/* img {
-  width: 22rem;
-  height: 23.43rem;
-  margin: 5px 5px 5px 5px;
-  display: inline-block;
-  border-radius: 10px;
-} */
-
 .gallery {
-  /* display: inline-block; */
   width: 100%;
-  /* margin-left: 100px; */
 }
 
 .search-container {
@@ -32,7 +22,7 @@
 
 .action-button {
   border-radius: 0.7rem;
-  background-color: #474a48;
+  background-color: black;
   color: #fff;
   margin-left: 1rem;
 }
@@ -40,7 +30,6 @@
 .navigation-bar-list {
   display: flex;
   justify-content: space-between;
-  /* flex-direction: column; */
   background-color: white;
   height: 3.5rem;
   align-items: center;

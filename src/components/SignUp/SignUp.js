@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "../SignUp/SignUp.css";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import { connect } from "react-redux";
+import { registerUser } from "../../store/actions";
+import PropTypes from "prop-types";
 
 class SignUp extends Component {
   constructor() {
@@ -12,24 +14,23 @@ class SignUp extends Component {
       lastName: "",
       email: "",
       password: "",
-      alreadyExists: false,
     };
   }
 
-  handleFirstNameChange = (event) => {
-    this.setState({ firstName: event.target.value });
-  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reducer.isAuthenticated) {
+      this.props.history.push("/timeline"); // push user to dashboard when they login
+    }
+  }
 
-  handleLastNameChange = (event) => {
-    this.setState({ lastName: event.target.value });
-  };
+  componentDidMount() {
+    if (this.props.reducer.isAuthenticated) {
+      this.props.history.push("/timeline");
+    }
+  }
 
-  handleEmailChange = (event) => {
-    this.setState({ email: event.target.value });
-  };
-
-  handlePasswordChange = (event) => {
-    this.setState({ password: event.target.value });
+  handleChange = (event, key) => {
+    this.setState({ [key]: event.target.value });
   };
 
   handleSubmit = (e) => {
@@ -40,19 +41,7 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-
-    axios.post("/signup", body).then(
-      (response) => {
-        if (response.data.status === "Success") {
-          this.props.history.push("/timeline");
-        } else if (response.data.error === "exists") {
-          this.setState({ alreadyExists: true });
-        }
-      },
-      (error) => {
-        console.log(error.message);
-      }
-    );
+    this.props.registerUser(body);
   };
   render() {
     return (
@@ -60,9 +49,9 @@ class SignUp extends Component {
         <div className="App">
           <div className="auth-wrapper">
             <div className="auth-inner">
-              {this.state.alreadyExists && (
+              {this.props.reducer.error && (
                 <p className="alreadyExists">
-                  Account with that email already exists!{" "}
+                  {this.props.reducer.error + " "}
                   <a href="/">sign in?</a>
                 </p>
               )}
@@ -75,7 +64,7 @@ class SignUp extends Component {
                     type="text"
                     className="form-control"
                     placeholder="First name"
-                    onChange={this.handleFirstNameChange}
+                    onChange={(e) => this.handleChange(e, "firstName")}
                     value={this.state.firstName}
                   />
                 </div>
@@ -86,7 +75,7 @@ class SignUp extends Component {
                     type="text"
                     className="form-control"
                     placeholder="Last name"
-                    onChange={this.handleLastNameChange}
+                    onChange={(e) => this.handleChange(e, "lastName")}
                     value={this.state.lastName}
                   />
                 </div>
@@ -97,7 +86,7 @@ class SignUp extends Component {
                     type="email"
                     className="form-control"
                     placeholder="Enter email"
-                    onChange={this.handleEmailChange}
+                    onChange={(e) => this.handleChange(e, "email")}
                     value={this.state.email}
                   />
                 </div>
@@ -108,7 +97,7 @@ class SignUp extends Component {
                     type="password"
                     className="form-control"
                     placeholder="Enter password"
-                    onChange={this.handlePasswordChange}
+                    onChange={(e) => this.handleChange(e, "password")}
                     value={this.state.password}
                   />
                 </div>
@@ -133,4 +122,13 @@ class SignUp extends Component {
   }
 }
 
-export default withRouter(SignUp);
+const mapStateToProps = (state) => ({
+  reducer: state,
+});
+
+SignUp.propTypes = {
+  reducer: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired,
+};
+
+export default withRouter(connect(mapStateToProps, { registerUser })(SignUp));

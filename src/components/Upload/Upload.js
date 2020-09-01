@@ -4,6 +4,9 @@ import "../Upload/Upload.css";
 import { Link, withRouter } from "react-router-dom";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../store/actions";
 
 class Upload extends Component {
   constructor() {
@@ -17,27 +20,17 @@ class Upload extends Component {
       user: {},
       inputfile: [],
       name: "",
+      error: "",
     };
   }
 
-  componentDidMount() {
-    this.checkUserLoggedIn();
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
+    ) {
+      this.props.history.push("/");
+    }
   }
-
-  checkUserLoggedIn = () => {
-    axios.get("/upload").then((response) => {
-      const user = response.data.user;
-      if (
-        typeof user === "undefined" ||
-        !user ||
-        Object.keys(user).length === 0
-      ) {
-        this.props.history.push("/");
-      } else {
-        this.setState({ name: user.firstName + " " + user.lastName });
-      }
-    });
-  };
 
   post = (e) => {
     e.preventDefault();
@@ -46,25 +39,39 @@ class Upload extends Component {
 
     formData.append("img", file[0]);
 
-    axios.post("/upload", formData).then(
-      (response) => {
-        this.setState({ file: response.data.file });
-        const data = this.state.file;
-        data.caption = this.state.caption;
-        data.tags = this.state.tags;
-        axios.post("/photo", data).then(
-          () => {
-            this.props.history.push("/timeline");
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (typeof file[0] === "undefined") {
+      this.setState({ error: "Please select an image to upload!" });
+    } else {
+      this.setState({ error: "" });
+      axios.post("/upload", formData).then(
+        (response) => {
+          console.log("ownername", this.props.reducer.user.name);
+          console.log("ownerid", this.props.reducer.user.id);
+          this.setState({ file: response.data.file });
+          const data = this.state.file;
+          data.caption = this.state.caption;
+          data.tags = this.state.tags;
+          data.ownerName = this.props.reducer.user.name;
+          data.ownerID = this.props.reducer.user.id;
+          data.email = this.props.reducer.user.email;
+          axios.post("/photo", data).then(
+            () => {
+              this.props.history.push("/timeline");
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  };
+
+  logout = () => {
+    this.props.logoutUser();
   };
 
   handleChange = (e) => {
@@ -85,7 +92,6 @@ class Upload extends Component {
     });
   };
   render() {
-    this.checkUserLoggedIn();
     return (
       <div>
         <nav className="navigation-bar-list">
@@ -93,17 +99,20 @@ class Upload extends Component {
             <Link to={"/timeline"}>
               <button className="navbar-link">Home</button>
             </Link>
-            {this.state.name.length > 0 && (
-              <p className="name">{this.state.name}</p>
+            {this.props.reducer.user.name.length > 0 && (
+              <p className="name">{this.props.reducer.user.name}</p>
             )}
           </div>
           <div>
-            <a className="logout navbar-link" href="/">
+            <button className="navbar-link" onClick={this.logout}>
               Log Out
-            </a>
+            </button>
           </div>
         </nav>
         <div className="upload-container">
+          {this.state.error.length > 0 && (
+            <p className="upload-error">{this.state.error}</p>
+          )}
           <h2 className="upload-title">Upload a picture</h2>
           <div className="form-container">
             <form
@@ -153,4 +162,13 @@ class Upload extends Component {
   }
 }
 
-export default withRouter(Upload);
+const mapStateToProps = (state) => ({
+  reducer: state,
+});
+
+Upload.propTypes = {
+  reducer: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+};
+
+export default withRouter(connect(mapStateToProps, { logoutUser })(Upload));
