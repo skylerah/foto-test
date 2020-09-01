@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
-  "homepage": "http://localhost:3000",
   "dependencies": {
     "@pathofdev/react-tag-input": "^1.0.7",
     "@testing-library/jest-dom": "^4.2.4",
