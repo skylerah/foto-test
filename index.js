@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const indexController = require("./controllers/indexController");
 const uploadController = require("./controllers/uploadController");
 const mongoose = require("mongoose");
-const config = require("../f0t0/config/keys.json");
+const config = require("./config/keys.json");
 const passport = require("passport");
 const path = require("path");
 mongoose.connect(config.mongoURI, { useNewUrlParser: true });
