@@ -6,7 +6,6 @@ const initialState = {
   isAuthenticated: false,
   user: {},
   loading: false,
-  name: "",
   error: "",
 };
 
@@ -14,10 +13,6 @@ const middleware = [thunk];
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case "UPDATE_NAME":
-      state.name = action.value;
-      break;
-
     case "SET_CURRENT_USER":
       return {
         ...state,

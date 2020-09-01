@@ -10,7 +10,6 @@ import { logoutUser } from "../../store/actions";
 class TimeLine extends Component {
   constructor() {
     super();
-    // Don't call this.setState() here!
     this.state = {
       images: [],
       search: "",

@@ -46,7 +46,7 @@ app.post("/signup", (req, res) => {
                   payload,
                   keys.secretOrKey,
                   {
-                    expiresIn: "24h", // 1 year in seconds
+                    expiresIn: "24h",
                   },
                   (err, token) => {
                     res.json({
@@ -85,7 +85,7 @@ app.post("/login", function (req, res) {
             payload,
             keys.secretOrKey,
             {
-              expiresIn: "24h", // 1 year in seconds
+              expiresIn: "24h",
             },
             (err, token) => {
               res.json({

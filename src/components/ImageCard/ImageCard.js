@@ -8,7 +8,6 @@ const ImageCard = (props) => {
       <div>
         <img src={props.src} alt={props.caption} />
       </div>
-      {/* <div className="photoDetails"> */}
       <div className="caption">
         <p>{props.caption}</p>
       </div>
@@ -39,7 +38,6 @@ const ImageCard = (props) => {
             <p>{props.ownerName}</p>
           </button>
         </div>
-        {/* </div> */}
       </div>
     </div>
   );

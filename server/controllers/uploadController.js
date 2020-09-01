@@ -120,17 +120,12 @@ app.get("/photos", (req, res) => {
 });
 
 app.post("/images/my-images", (req, res) => {
-  console.log("user email", req.body);
   User.findOne({ email: req.body.email }, function (err, user) {
     if (err) {
-      console.log("my image error", err);
       return res.status(400).json({ err: "Bad request" });
     } else if (!user) {
-      console.log("my image error - no user", err);
       return res.status(400).json({ err: "user not found" });
     }
-
-    console.log("user images", user.images);
     return res.status(200).json({
       userImages: user.images,
     });
@@ -160,7 +155,6 @@ app.delete("/image/:id", (req, res) => {
 
       const userID = photo.ownerID;
       const filename = photo.filename;
-      console.log("filename to be deleted", filename);
       User.findOne({ _id: userID }, function (err, user) {
         if (err) {
           return res.status(400).json({ err: "Bad request" });
@@ -171,8 +165,6 @@ app.delete("/image/:id", (req, res) => {
         const newImages = images.filter(function (image) {
           return image !== filename;
         });
-        console.log("former images", images);
-        console.log("images after filter", newImages);
         User.findOneAndUpdate({ _id: userID }, { images: newImages }, function (
           err,
           updatedUser

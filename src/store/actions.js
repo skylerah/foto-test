@@ -2,13 +2,6 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-export const updateName = (name) => {
-  return {
-    type: "UPDATE_NAME",
-    value: name,
-  };
-};
-
 // Login - get user token
 export const loginUser = (userData) => (dispatch) => {
   axios
@@ -17,21 +10,14 @@ export const loginUser = (userData) => (dispatch) => {
       // Save to localStorage
       // Set token to localStorage
       const { token } = res.data;
-      const { message } = res.data;
-      if (typeof message !== "undefined") {
-        dispatch({
-          type: "GET_ERRORS",
-          payload: message,
-        });
-      } else {
-        localStorage.setItem("jwtToken", token);
-        // Set token to Auth header
-        setAuthToken(token);
-        // Decode token to get user data
-        const decoded = jwt_decode(token);
-        // Set current user
-        dispatch(setCurrentUser(decoded));
-      }
+      localStorage.setItem("jwtToken", token);
+      // Set token to Auth header
+      setAuthToken(token);
+      // Decode token to get user data
+      const decoded = jwt_decode(token);
+      // Set current user
+      dispatch(setCurrentUser(decoded));
+      dispatch(getError(""));
     })
     .catch(
       (err) => err.response && dispatch(getError(err.response.data.message))
@@ -53,7 +39,8 @@ export const registerUser = (userData, history) => (dispatch) => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
-    }) // re-direct to login on successful register
+      dispatch(getError(""));
+    })
     .catch(
       (err) => err.response && dispatch(getError(err.response.data.message))
     );
@@ -74,6 +61,7 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
+  dispatch(getError(""));
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
 };

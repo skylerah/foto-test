@@ -1,6 +1,5 @@
 {
   "server_port": "3001",
   "mongoURI": "mongodb+srv://foto:foto@cluster0.5kmkd.mongodb.net/foto?retryWrites=true&w=majority",
-  "app_secret_hash_key": "k2jh34938hf9shedfosdikfa0s9fu023hfjk",
-  "secretOrKey": "secret"
+  "secretOrKey": "sadlbduasbvhdsky"
 }

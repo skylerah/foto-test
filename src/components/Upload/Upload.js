@@ -11,15 +11,12 @@ import { logoutUser } from "../../store/actions";
 class Upload extends Component {
   constructor() {
     super();
-    // Don't call this.setState() here!
     this.state = {
       filename: "",
       file: {},
       caption: "",
       tags: [],
-      user: {},
       inputfile: [],
-      name: "",
       error: "",
     };
   }

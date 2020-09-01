@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 class Login extends Component {
   constructor() {
     super();
-    // Don't call this.setState() here!
     this.state = {
       email: "",
       password: "",
@@ -22,7 +21,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isAuthenticated) {
-      this.props.history.push("/timeline"); // push user to dashboard when they login
+      this.props.history.push("/timeline");
     }
   }
 

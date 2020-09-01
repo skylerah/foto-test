@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 class SignUp extends Component {
   constructor() {
     super();
-    // Don't call this.setState() here!
     this.state = {
       firstName: "",
       lastName: "",
@@ -19,7 +18,7 @@ class SignUp extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.reducer.isAuthenticated) {
-      this.props.history.push("/timeline"); // push user to dashboard when they login
+      this.props.history.push("/timeline");
     }
   }
 
