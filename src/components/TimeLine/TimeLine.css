@@ -25,6 +25,7 @@
   background-color: black;
   color: #fff;
   margin-left: 1rem;
+  font-family: "Courgette", cursive;
 }
 
 .navigation-bar-list {
@@ -39,18 +40,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 1rem;
 }
 .name {
-  margin-left: 1rem;
   margin-bottom: 0px;
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
 }
 
 .navbar-link {
   color: black;
   margin-right: 1rem;
+  margin-left: 0;
   border: 0;
   background-color: #fff;
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
 }
 
 .navbar-link:hover {
@@ -64,4 +68,13 @@
   margin-top: 1rem;
   color: #fff;
   border: solid;
+}
+
+.logo {
+  width: 12rem;
+  height: 4rem;
+}
+
+button.navbar-link {
+  background: none;
 }

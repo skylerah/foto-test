@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginUser } from "../../store/actions";
 import PropTypes from "prop-types";
+import logo from "../../assets/images/logoBlack.png";
 
 class Login extends Component {
   constructor() {
@@ -45,6 +46,7 @@ class Login extends Component {
       <div>
         <div className="App">
           <div className="auth-wrapper">
+            <img className="logo-black" src={logo} alt="logo" />
             <div className="auth-inner">
               {this.props.error.length > 0 && (
                 <p className="login-error">{this.props.error}</p>

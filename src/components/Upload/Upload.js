@@ -7,6 +7,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../store/actions";
+import logo from "../../assets/images/logo.png";
 
 class Upload extends Component {
   constructor() {
@@ -94,9 +95,9 @@ class Upload extends Component {
       <div>
         <nav className="navigation-bar-list">
           <div className="my-info">
-            <Link to={"/timeline"}>
-              <button className="navbar-link">Home</button>
-            </Link>
+            <a href="/timeline">
+              <img src={logo} alt="logo" className="logo" />
+            </a>
             {this.props.reducer.user.name.length > 0 && (
               <p className="name">{this.props.reducer.user.name}</p>
             )}

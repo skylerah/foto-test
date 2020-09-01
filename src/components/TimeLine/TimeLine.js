@@ -6,6 +6,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../store/actions";
+import logo from "../../assets/images/logo.png";
 
 class TimeLine extends Component {
   constructor() {
@@ -176,7 +177,7 @@ class TimeLine extends Component {
         <nav className="navigation-bar-list">
           <div className="my-info">
             <button className="navbar-link" onClick={this.restorePhotos}>
-              Home
+              <img src={logo} alt="logo" className="logo" />
             </button>
             <button className="navbar-link" onClick={this.myImages}>
               My Images
