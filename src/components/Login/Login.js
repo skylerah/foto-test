@@ -13,7 +13,9 @@ class Login extends Component {
       password: "",
     };
   }
+
   componentDidMount() {
+    //if user is authenticated, redirect to timeline page
     if (this.props.isAuthenticated) {
       this.props.history.push("/timeline");
     }

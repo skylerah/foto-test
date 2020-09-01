@@ -21,6 +21,7 @@ class Upload extends Component {
     };
   }
 
+  //log user out if session expires/user clicks logout
   componentDidUpdate(prevProps) {
     if (
       prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
@@ -35,15 +36,13 @@ class Upload extends Component {
     const formData = new FormData();
 
     formData.append("img", file[0]);
-
+    //only post if a file has been selected
     if (typeof file[0] === "undefined") {
       this.setState({ error: "Please select an image to upload!" });
     } else {
       this.setState({ error: "" });
       axios.post("/upload", formData).then(
         (response) => {
-          console.log("ownername", this.props.reducer.user.name);
-          console.log("ownerid", this.props.reducer.user.id);
           this.setState({ file: response.data.file });
           const data = this.state.file;
           data.caption = this.state.caption;
@@ -67,6 +66,7 @@ class Upload extends Component {
     }
   };
 
+  //log user out
   logout = () => {
     this.props.logoutUser();
   };
@@ -83,6 +83,7 @@ class Upload extends Component {
     this.setState({ caption: e.target.value });
   };
 
+  //add tags to state
   addTags = (tags) => {
     this.setState({
       tags,

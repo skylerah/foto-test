@@ -17,6 +17,7 @@ class SignUp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //if user is successfully registered, redirect to timeline
     if (nextProps.reducer.isAuthenticated) {
       this.props.history.push("/timeline");
     }

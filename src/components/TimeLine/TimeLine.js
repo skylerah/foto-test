@@ -18,6 +18,7 @@ class TimeLine extends Component {
     };
   }
 
+  //if session expires, redirect user to sign in page
   componentDidUpdate(prevProps) {
     if (
       prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
@@ -33,6 +34,7 @@ class TimeLine extends Component {
     this.search();
   };
 
+  //merge two arrays together with no duplicates
   mergeArrays = (array1, array2) => {
     var result = array1;
     for (var i = 0; i < array2.length; i++) {
@@ -44,28 +46,36 @@ class TimeLine extends Component {
   };
 
   search = () => {
-    console.log("user is", this.props.reducer.user);
+    //get all images
     axios.get("/photos").then((response) => {
       const images = response.data;
       const caption = this.state.search;
+      //remove images that don't satisfy our search by caption
       const filteredImages = images.filter(function (image) {
         return (
           image.caption.includes(caption) || caption.includes(image.caption)
         );
       });
+
+      //remove images that don't satisfy our search by tags
       const filteredImagesByTags = images.filter(
         this.searchTags.bind(this, caption)
       );
+
+      //merge image search results for caption and tags
       const searchResults = this.mergeArrays(
         filteredImages,
         filteredImagesByTags
       );
+
+      //update state with new images
       this.setState({
         images: searchResults,
       });
     });
   };
 
+  //search list of tags
   searchTags = (caption, image) => {
     for (let i = 0; i < image.tags.length; i++) {
       if (image.tags[i].includes(caption) || caption.includes(image.tags[i])) {
@@ -75,6 +85,7 @@ class TimeLine extends Component {
     return false;
   };
 
+  //search images by filename
   searchImages = (userImages, image) => {
     for (let i = 0; i < userImages.length; i++) {
       if (image.filename === userImages[i]) {
@@ -84,40 +95,46 @@ class TimeLine extends Component {
     return false;
   };
 
+  //log user out
   logout = () => {
     this.props.logoutUser();
   };
 
+  //display current user images
   myImages = () => {
     const body = {
       email: this.props.reducer.user.email,
     };
     axios.post("/images/my-images", body).then((response) => {
+      //get all photos
       axios.get("/photos").then((photoResponse) => {
         const images = photoResponse.data;
         if (response.data.userImages.length > 0) {
-          console.log("here");
+          //if user images exists, filter images that don't belong to user
           const userImages = response.data.userImages;
           const filteredImages = images.filter(
             this.searchImages.bind(this, userImages)
           );
+
+          //update state with user images
           this.setState({
             images: filteredImages,
             noImageMsg: "",
             myImages: true,
           });
         } else {
+          //display message and update state images to empty
           this.setState({
             noImageMsg: "You have no images! Upload one to view!",
             myImages: true,
             images: [],
           });
-          console.log("msg", this.state.noImageMsg);
         }
       });
     });
   };
 
+  //display images uploaded by a particular user
   getUserImage = (id) => {
     axios.get("/images/" + id).then((response) => {
       if (response.data.userImages.length > 0) {
@@ -131,12 +148,14 @@ class TimeLine extends Component {
     });
   };
 
+  //update state with all images in repository
   restorePhotos = () => {
     axios.get("/photos").then((response) => {
       this.setState({ images: response.data, noImageMsg: "", myImages: false });
     });
   };
 
+  //delete an image by id
   deleteImage = (id) => {
     axios
       .delete("/image/" + id)
