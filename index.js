@@ -1,24 +1,32 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const pino = require("express-pino-logger")();
 const indexController = require("./controllers/indexController");
 const uploadController = require("./controllers/uploadController");
 const mongoose = require("mongoose");
-const config = require("../config/keys.json");
+const config = require("../f0t0/config/keys.json");
 const passport = require("passport");
+const path = require("path");
 mongoose.connect(config.mongoURI, { useNewUrlParser: true });
 const app = express();
+const port = process.env.PORT || 3001;
 
 // Passport middleware
 app.use(passport.initialize());
 // Passport config
-require("../config/passport")(passport);
+require("../f0t0/config/passport")(passport);
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(pino);
 app.use("/", indexController);
 app.use("/", uploadController);
 
-app.listen(config.server_port, () =>
-  console.log("Express server is running on localhost:3001")
+//serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  //set static folder
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+app.listen(port, () =>
+  console.log("Express server is running on port " + port)
 );
