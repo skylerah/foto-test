@@ -1,12 +1,10 @@
 const express = require("express");
-const pino = require("express-pino-logger")();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys.json");
+const keys = require("../config/keys.json");
 
 const app = express();
-app.use(pino);
 app.use(express.json());
 
 app.post("/signup", (req, res) => {
