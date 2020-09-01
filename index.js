@@ -13,7 +13,7 @@ const port = process.env.PORT || 3001;
 // Passport middleware
 app.use(passport.initialize());
 // Passport config
-require("../f0t0/config/passport")(passport);
+require("./config/passport")(passport);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", indexController);
