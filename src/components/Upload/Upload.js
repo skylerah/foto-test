@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../Upload/Upload.css";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import PropTypes from "prop-types";
