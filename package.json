@@ -20,16 +20,20 @@
     "react-bootstrap": "^1.0.0-beta.5"
   },
   "devDependencies": {
-    "concurrently": "3.5.1"
+    "concurrently": "3.5.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0"
   },
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon index.js",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "concurrently \"cd client && npm test a\" \"cd server && npm test\" ",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "client-install": "npm install --prefix client",
+    "server": "nodemon index.js --exec babel-node --presets babel-preset-env",
+    "start": "node index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Temisan Iwere",
+  "license": "MIT"
 }
