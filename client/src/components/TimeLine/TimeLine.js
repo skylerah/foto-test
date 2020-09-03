@@ -232,9 +232,6 @@ class TimeLine extends Component {
                 placeholder="Search by tag or caption"
                 className="search-input"
               />
-              <button className="action-button" onClick={this.search}>
-                Search
-              </button>
               <Link to={"/upload"}>
                 <button className="action-button">Upload</button>
               </Link>
