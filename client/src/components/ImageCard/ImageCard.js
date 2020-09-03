@@ -14,7 +14,12 @@ const ImageCard = (props) => {
       {props.tags.length > 0 && (
         <div>
           {props.tags.map((tag, index) => (
-            <Button className="tagBtn" variant="secondary" key={index}>
+            <Button
+              className="tagBtn"
+              variant="secondary"
+              key={index}
+              onClick={() => props.tagImage(tag)}
+            >
               {tag}
             </Button>
           ))}
