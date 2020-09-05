@@ -5,10 +5,13 @@ const uploadController = require("./controllers/uploadController");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const path = require("path");
-require("dotenv").config();
-mongoose.connect(process.env.mongoURI, { useNewUrlParser: true });
 const app = express();
 const port = process.env.PORT || 3001;
+mongoose.connect(process.env.mongoURI, { useNewUrlParser: true });
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 // Passport middleware
 app.use(passport.initialize());

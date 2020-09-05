@@ -2,10 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const app = express();
 app.use(express.json());
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 app.post("/signup", (req, res) => {
   User.findOne({ email: req.body.email }, function (err, user) {

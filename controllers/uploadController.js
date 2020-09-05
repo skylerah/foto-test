@@ -9,7 +9,10 @@ const Grid = require("gridfs-stream");
 const Photo = require("../models/Photo");
 const User = require("../models/User");
 const path = require("path");
-require("dotenv").config();
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 //Create collection
 const conn = mongoose.createConnection(process.env.mongoURI);
