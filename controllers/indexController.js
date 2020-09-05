@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys.json");
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
@@ -42,7 +43,7 @@ app.post("/signup", (req, res) => {
                 };
                 jwt.sign(
                   payload,
-                  keys.secretOrKey,
+                  process.env.secretOrKey,
                   {
                     expiresIn: "24h",
                   },
@@ -81,7 +82,7 @@ app.post("/login", function (req, res) {
           };
           jwt.sign(
             payload,
-            keys.secretOrKey,
+            process.env.secretOrKey,
             {
               expiresIn: "24h",
             },

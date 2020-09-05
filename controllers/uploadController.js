@@ -6,13 +6,13 @@ const express = require("express");
 const app = express();
 const crypto = require("crypto");
 const Grid = require("gridfs-stream");
-const config = require("../config/keys.json");
 const Photo = require("../models/Photo");
 const User = require("../models/User");
 const path = require("path");
+require("dotenv").config();
 
 //Create collection
-const conn = mongoose.createConnection(config.mongoURI);
+const conn = mongoose.createConnection(process.env.mongoURI);
 let gfs;
 
 conn.once("open", () => {
@@ -23,7 +23,7 @@ conn.once("open", () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-  url: config.mongoURI,
+  url: process.env.mongoURI,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
