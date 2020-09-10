@@ -9,12 +9,18 @@ const ImageCard = (props) => {
         <img src={props.src} alt={props.caption} />
       </div>
       <div className="caption">
-        <p>{props.caption}</p>
+        <p data-testid="caption">{props.caption}</p>
       </div>
       {props.tags.length > 0 && (
         <div>
           {props.tags.map((tag, index) => (
-            <Button className="tagBtn" variant="secondary" key={index}>
+            <Button
+              className="tagBtn"
+              variant="secondary"
+              key={index}
+              onClick={() => props.tagImage(tag)}
+              data-testid={tag + index}
+            >
               {tag}
             </Button>
           ))}
@@ -33,9 +39,11 @@ const ImageCard = (props) => {
           </div>
         )}
         <div className="shared-container">
-          <p className="shared-text">shared by</p>
+          <p data-testid="shared" className="shared-text">
+            shared by
+          </p>
           <button className="imgcardBtn" onClick={props.userImage}>
-            <p>{props.ownerName}</p>
+            <p data-testid="ownerName">{props.ownerName}</p>
           </button>
         </div>
       </div>

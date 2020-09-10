@@ -3,12 +3,15 @@ const bodyParser = require("body-parser");
 const indexController = require("./controllers/indexController");
 const uploadController = require("./controllers/uploadController");
 const mongoose = require("mongoose");
-const config = require("./config/keys.json");
 const passport = require("passport");
 const path = require("path");
-mongoose.connect(config.mongoURI, { useNewUrlParser: true });
 const app = express();
 const port = process.env.PORT || 3001;
+mongoose.connect(process.env.mongoURI, { useNewUrlParser: true });
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 // Passport middleware
 app.use(passport.initialize());

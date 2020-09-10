@@ -86,6 +86,16 @@ class TimeLine extends Component {
     return false;
   };
 
+  //search for exact tag
+  searchExactTags = (tag, image) => {
+    for (let i = 0; i < image.tags.length; i++) {
+      if (image.tags[i] === tag) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   //search images by filename
   searchImages = (userImages, image) => {
     for (let i = 0; i < userImages.length; i++) {
@@ -149,6 +159,23 @@ class TimeLine extends Component {
     });
   };
 
+  //display images with same tags
+  getTagImages = (tag) => {
+    axios.get("/photos").then((response) => {
+      const images = response.data;
+      //remove images that don't satisfy our search by tags
+      const filteredImagesByTags = images.filter(
+        this.searchExactTags.bind(this, tag)
+      );
+
+      this.setState({
+        images: filteredImagesByTags,
+        noImageMsg: "",
+        myImages: true,
+      });
+    });
+  };
+
   //update state with all images in repository
   restorePhotos = () => {
     axios.get("/photos").then((response) => {
@@ -205,9 +232,6 @@ class TimeLine extends Component {
                 placeholder="Search by tag or caption"
                 className="search-input"
               />
-              <button className="action-button" onClick={this.search}>
-                Search
-              </button>
               <Link to={"/upload"}>
                 <button className="action-button">Upload</button>
               </Link>
@@ -228,6 +252,7 @@ class TimeLine extends Component {
                   photoID={file.id}
                   userImage={() => this.getUserImage(file.ownerID)}
                   delete={this.deleteImage}
+                  tagImage={this.getTagImages}
                 />
               );
             })}

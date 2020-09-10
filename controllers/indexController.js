@@ -2,10 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys.json");
 
 const app = express();
 app.use(express.json());
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 app.post("/signup", (req, res) => {
   User.findOne({ email: req.body.email }, function (err, user) {
@@ -42,7 +45,7 @@ app.post("/signup", (req, res) => {
                 };
                 jwt.sign(
                   payload,
-                  keys.secretOrKey,
+                  process.env.secretOrKey,
                   {
                     expiresIn: "24h",
                   },
@@ -81,7 +84,7 @@ app.post("/login", function (req, res) {
           };
           jwt.sign(
             payload,
-            keys.secretOrKey,
+            process.env.secretOrKey,
             {
               expiresIn: "24h",
             },

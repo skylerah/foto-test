@@ -26,7 +26,7 @@
   margin-left: 1rem;
   border: 0;
   background-color: #fff;
-  font-family: "Courgette", cursive;
+  font-family: "Delius Swash Caps", cursive;
 }
 
 .navbar-link:hover {
@@ -61,7 +61,7 @@
   text-align: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  font-family: "Courgette", cursive;
+  font-family: "Delius Swash Caps", cursive;
 }
 
 .upload-container {
@@ -78,7 +78,7 @@
   text-align: center;
   margin-top: 3rem;
   align-self: center;
-  font-family: "Courgette", cursive;
+  font-family: "Delius Swash Caps", cursive;
 }
 
 .custom-file-label {
