@@ -47,7 +47,7 @@ app.post("/signup", (req, res) => {
                   payload,
                   process.env.secretOrKey,
                   {
-                    expiresIn: "24h",
+                    expiresIn: "5h",
                   },
                   (err, token) => {
                     res.json({
@@ -86,7 +86,7 @@ app.post("/login", function (req, res) {
             payload,
             process.env.secretOrKey,
             {
-              expiresIn: "24h",
+              expiresIn: "5h",
             },
             (err, token) => {
               res.json({

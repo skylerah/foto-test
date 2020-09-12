@@ -75,11 +75,7 @@ app.get("/image/:filename", (req, res) => {
 app.post("/photo", (req, res) => {
   const newPhoto = new Photo({
     id: req.body.id,
-    chunkSize: req.body.chunkSize,
-    uploadDate: req.body.uploadDate,
     filename: req.body.filename,
-    md5: req.body.md5,
-    contentType: req.body.contentType,
     caption: req.body.caption,
     tags: req.body.tags,
     ownerName: req.body.ownerName,
