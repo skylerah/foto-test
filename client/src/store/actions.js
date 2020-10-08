@@ -17,10 +17,10 @@ export const loginUser = (userData) => (dispatch) => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
-      dispatch(getError(""));
+      dispatch(setError(""));
     })
     .catch(
-      (err) => err.response && dispatch(getError(err.response.data.message))
+      (err) => err.response && dispatch(setError(err.response.data.message))
     );
 };
 
@@ -39,10 +39,10 @@ export const registerUser = (userData, history) => (dispatch) => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
-      dispatch(getError(""));
+      dispatch(setError(""));
     })
     .catch(
-      (err) => err.response && dispatch(getError(err.response.data.message))
+      (err) => err.response && dispatch(setError(err.response.data.message))
     );
 };
 
@@ -60,14 +60,14 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
-  dispatch(getError(""));
+  dispatch(setError(""));
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
 };
 
-export const getError = (error) => {
+export const setError = (error) => {
   return {
-    type: "GET_ERROR",
+    type: "SET_ERROR",
     payload: error,
   };
 };

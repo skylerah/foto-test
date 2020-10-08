@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const path = require("path");
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 mongoose.connect(process.env.mongoURI, { useNewUrlParser: true });
 
 if (process.env.NODE_ENV !== "production") {

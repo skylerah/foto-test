@@ -48,7 +48,7 @@ class Login extends Component {
           <div className="auth-wrapper">
             <img className="logo-black" src={logo} alt="logo" />
             <div className="auth-inner">
-              {this.props.error.length > 0 && (
+              {this.props.error && this.props.error.length > 0 && (
                 <p className="login-error">{this.props.error}</p>
               )}
               <form onSubmit={this.handleSubmit}>

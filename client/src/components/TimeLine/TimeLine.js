@@ -15,7 +15,6 @@ class TimeLine extends Component {
       images: [],
       search: "",
       noImageMsg: "",
-      myImagesPage: false,
     };
   }
 
@@ -50,11 +49,12 @@ class TimeLine extends Component {
     //get all images
     axios.get("/photos").then((response) => {
       const images = response.data;
-      const caption = this.state.search;
+      const caption = this.state.search.toLowerCase();
       //remove images that don't satisfy our search by caption
       const filteredImages = images.filter(function (image) {
         return (
-          image.caption.includes(caption) || caption.includes(image.caption)
+          image.caption.toLowerCase().includes(caption) ||
+          caption.includes(image.caption.toLowerCase())
         );
       });
 
@@ -79,7 +79,10 @@ class TimeLine extends Component {
   //search list of tags
   searchTags = (caption, image) => {
     for (let i = 0; i < image.tags.length; i++) {
-      if (image.tags[i].includes(caption) || caption.includes(image.tags[i])) {
+      if (
+        image.tags[i].toLowerCase().includes(caption) ||
+        caption.includes(image.tags[i].toLowerCase())
+      ) {
         return true;
       }
     }
@@ -111,50 +114,24 @@ class TimeLine extends Component {
     this.props.logoutUser();
   };
 
-  //display current user images
-  myImages = () => {
-    const body = {
-      email: this.props.reducer.user.email,
-    };
-    axios.post("/images/my-images", body).then((response) => {
-      //get all photos
-      axios.get("/photos").then((photoResponse) => {
-        const images = photoResponse.data;
-        if (response.data.userImages.length > 0) {
-          //if user images exists, filter images that don't belong to user
-          const userImages = response.data.userImages;
-          const filteredImages = images.filter(
-            this.searchImages.bind(this, userImages)
-          );
-
-          //update state with user images
-          this.setState({
-            images: filteredImages,
-            noImageMsg: "",
-            myImages: true,
-          });
-        } else {
-          //display message and update state images to empty
-          this.setState({
-            noImageMsg: "You have no images! Upload one to view!",
-            myImages: true,
-            images: [],
-          });
-        }
-      });
-    });
-  };
-
   //display images uploaded by a particular user
-  getUserImage = (id) => {
+  getUserImage = (id, myImagesState) => {
     axios.get("/images/" + id).then((response) => {
       if (response.data.userImages.length > 0) {
         const userImages = response.data.userImages;
         this.setState({
           images: userImages,
           noImageMsg: "",
-          myImages: true,
+          userImages: true,
         });
+      } else {
+        if (myImagesState) {
+          this.setState({
+            noImageMsg: "You currently have no images! Upload one to view",
+            userImages: true,
+            images: [],
+          });
+        }
       }
     });
   };
@@ -171,7 +148,7 @@ class TimeLine extends Component {
       this.setState({
         images: filteredImagesByTags,
         noImageMsg: "",
-        myImages: true,
+        userImages: true,
       });
     });
   };
@@ -179,7 +156,11 @@ class TimeLine extends Component {
   //update state with all images in repository
   restorePhotos = () => {
     axios.get("/photos").then((response) => {
-      this.setState({ images: response.data, noImageMsg: "", myImages: false });
+      this.setState({
+        images: response.data,
+        noImageMsg: "",
+        userImages: false,
+      });
     });
   };
 
@@ -199,6 +180,7 @@ class TimeLine extends Component {
 
   render() {
     const images = this.state.images;
+    const userID = this.props.reducer.user.id;
     return (
       <div>
         <nav className="navigation-bar-list">
@@ -206,7 +188,10 @@ class TimeLine extends Component {
             <button className="navbar-link" onClick={this.restorePhotos}>
               <img src={logo} alt="logo" className="logo" />
             </button>
-            <button className="navbar-link" onClick={this.myImages}>
+            <button
+              className="navbar-link"
+              onClick={() => this.getUserImage(userID, true)}
+            >
               My Images
             </button>
             {this.props.reducer.user.name && (
@@ -223,7 +208,7 @@ class TimeLine extends Component {
           {this.state.noImageMsg.length > 0 && (
             <p className="noImgMsg">{this.state.noImageMsg}</p>
           )}
-          {!this.state.myImages && (
+          {!this.state.userImages && (
             <div className="search-container">
               <input
                 type="text"
@@ -250,7 +235,7 @@ class TimeLine extends Component {
                   ownerID={file.ownerID}
                   userID={this.props.reducer.user.id}
                   photoID={file.id}
-                  userImage={() => this.getUserImage(file.ownerID)}
+                  userImage={() => this.getUserImage(file.ownerID, false)}
                   delete={this.deleteImage}
                   tagImage={this.getTagImages}
                 />

@@ -54,7 +54,6 @@ class SignUp extends Component {
               {this.props.reducer.error && (
                 <p className="alreadyExists">
                   {this.props.reducer.error + " "}
-                  <a href="/">sign in?</a>
                 </p>
               )}
               <form onSubmit={this.handleSubmit}>

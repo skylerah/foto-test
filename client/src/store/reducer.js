@@ -19,7 +19,7 @@ export default function reducer(state = initialState, action) {
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload,
       };
-    case "GET_ERROR":
+    case "SET_ERROR":
       return {
         ...state,
         error: action.payload,
