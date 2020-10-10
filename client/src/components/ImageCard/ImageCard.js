@@ -26,7 +26,7 @@ const ImageCard = (props) => {
           ))}
         </div>
       )}
-      <div className="img-footer">
+      <div className="img__footer">
         {props.ownerID === props.userID && (
           <div>
             <button
@@ -38,11 +38,11 @@ const ImageCard = (props) => {
             </button>
           </div>
         )}
-        <div className="shared-container">
-          <p data-testid="shared" className="shared-text">
+        <div className="shared__container">
+          <p data-testid="shared" className="shared__text">
             shared by
           </p>
-          <button className="imgcardBtn" onClick={props.userImage}>
+          <button className="imgcard__btn" onClick={props.userImage}>
             <p data-testid="ownerName">{props.ownerName}</p>
           </button>
         </div>

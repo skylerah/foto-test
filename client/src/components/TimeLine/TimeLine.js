@@ -183,13 +183,13 @@ class TimeLine extends Component {
     const userID = this.props.reducer.user.id;
     return (
       <div>
-        <nav className="navigation-bar-list">
-          <div className="my-info">
-            <button className="navbar-link" onClick={this.restorePhotos}>
+        <nav className="navigation__bar__list">
+          <div className="my__info">
+            <button className="navbar__link" onClick={this.restorePhotos}>
               <img src={logo} alt="logo" className="logo" />
             </button>
             <button
-              className="navbar-link"
+              className="navbar__link"
               onClick={() => this.getUserImage(userID, true)}
             >
               My Images
@@ -199,7 +199,7 @@ class TimeLine extends Component {
             )}
           </div>
           <div>
-            <button className="navbar-link" onClick={this.logout}>
+            <button className="navbar__link" onClick={this.logout}>
               Log Out
             </button>
           </div>
@@ -209,21 +209,21 @@ class TimeLine extends Component {
             <p className="noImgMsg">{this.state.noImageMsg}</p>
           )}
           {!this.state.userImages && (
-            <div className="search-container">
+            <div className="search__container">
               <input
                 type="text"
                 onChange={this.handleSearch}
                 value={this.state.search}
                 placeholder="Search by tag or caption"
-                className="search-input"
+                className="search__input"
               />
               <Link to={"/upload"}>
-                <button className="action-button">Upload</button>
+                <button className="action__button">Upload</button>
               </Link>
             </div>
           )}
 
-          <div className="image-container">
+          <div className="image__container">
             {images.map((file, index) => {
               return (
                 <ImageCard

@@ -45,11 +45,11 @@ class Login extends Component {
     return (
       <div>
         <div className="App">
-          <div className="auth-wrapper">
-            <img className="logo-black" src={logo} alt="logo" />
-            <div className="auth-inner">
+          <div className="auth__wrapper">
+            <img className="logo__black" src={logo} alt="logo" />
+            <div className="auth__inner">
               {this.props.error && this.props.error.length > 0 && (
-                <p className="login-error">{this.props.error}</p>
+                <p className="login__error">{this.props.error}</p>
               )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign In</h3>
@@ -95,11 +95,11 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-block">
                   Submit
                 </button>
-                <div className="alt-suggestions">
-                  <p className="forgot-password text-left">
+                <div className="alt__suggestions">
+                  <p className="forgot__password text-left">
                     Don't have an account? <a href="/sign-up">Sign Up</a>
                   </p>
-                  <p className="forgot-password text-right">
+                  <p className="forgot__password text-right">
                     Forgot <a href="/">password?</a>
                   </p>
                 </div>

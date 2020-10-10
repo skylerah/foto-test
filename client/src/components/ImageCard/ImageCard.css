@@ -35,35 +35,27 @@ img {
   font-family: "Helvetica", "Arial", sans-serif;
 }
 
-.profile-link {
-  color: black;
-}
-
-.profile-link:hover {
-  color: #fff;
-}
-
-.shared-text {
+.shared__text {
   float: right;
   margin-right: 0.2rem;
   font-family: "Helvetica", "Arial", sans-serif;
 }
 
-.shared-container {
+.shared__container {
   margin-top: 0.5rem;
   margin-right: 0.7rem;
   display: flex;
   justify-content: flex-end;
 }
 
-.imgcardBtn {
+.imgcard__btn {
   background: none;
   border: none;
   color: black;
   font-family: "Helvetica", "Arial", sans-serif;
 }
 
-.imgcardBtn:hover {
+.imgcard__btn:hover {
   color: black;
 }
 
@@ -75,7 +67,7 @@ img {
   font-family: "Helvetica", "Arial", sans-serif;
 }
 
-.img-footer {
+.img__footer {
   display: flex;
   justify-content: space-between;
   margin-top: 2.5rem;

@@ -1,9 +1,9 @@
 import React from "react";
 import "./NotFound.css";
 
-const NotFound = (props) => {
+const NotFound = () => {
   return (
-    <div className="notFoundContainer">
+    <div className="notFound__Container">
       <div className="notFound">
         <p>Page Not Found!</p>
         <a href="/timeline">Go Home</a>

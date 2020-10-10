@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
 
-.auth-inner {
+.auth__inner {
   width: 450px;
   margin: auto;
   background: #ffdad6;
@@ -38,29 +38,29 @@ body,
 html,
 .App,
 #root,
-.auth-wrapper {
+.auth__wrapper {
   width: 100%;
   height: 100%;
 }
 
-.navbar-light {
+.navbar__light {
   background-color: #ffffff;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 }
 
-.auth-wrapper {
+.auth__wrapper {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: left;
 }
 
-.auth-wrapper .form-control:focus {
+.auth__wrapper .form-control:focus {
   border-color: #167bff;
   box-shadow: none;
 }
 
-.auth-wrapper h3 {
+.auth__wrapper h3 {
   text-align: center;
   margin: 0;
   line-height: 1;
@@ -80,11 +80,11 @@ html,
   margin: 0;
 }
 
-.forgot-password a {
+.forgot__password a {
   color: black;
 }
 
-.forgot-password a:hover {
+.forgot__password a:hover {
   color: black;
 }
 
@@ -94,11 +94,11 @@ html,
   text-align: center;
 }
 
-.bottom-link {
+.bottom__link {
   color: #fff;
 }
 
-.bottom-link:hover {
+.bottom__link:hover {
   color: black;
 }
 
@@ -110,7 +110,7 @@ html,
   color: black !important;
 }
 
-.logo-black {
+.logo__black {
   width: 30rem;
   height: 4rem;
   align-self: center;
