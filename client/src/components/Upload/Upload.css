@@ -1,7 +1,7 @@
 .navigation__bar__list {
   display: flex;
   justify-content: space-between;
-  background-color: #ffdad6;
+  background-color: #bdb3b7;
   height: 3.5rem;
   align-items: center;
 }
