@@ -61,6 +61,7 @@ class Login extends Component {
                     className="form-control"
                     placeholder="Enter email"
                     onChange={(e) => this.handleChange(e, "email")}
+                    data-testid="email"
                     value={this.state.email}
                   />
                 </div>
@@ -69,6 +70,7 @@ class Login extends Component {
                   <label>Password</label>
                   <input
                     type="password"
+                    data-testid="password"
                     className="form-control"
                     placeholder="Enter password"
                     onChange={(e) => this.handleChange(e, "password")}

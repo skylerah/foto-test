@@ -6,7 +6,7 @@ const ImageCard = (props) => {
   return (
     <div className="imgCard">
       <div>
-        <img src={props.src} alt={props.caption} />
+        <img src={props.src} alt={props.caption} data-testid="image" />
       </div>
       <div className="caption">
         <p data-testid="caption">{props.caption}</p>
@@ -19,7 +19,7 @@ const ImageCard = (props) => {
               variant="secondary"
               key={index}
               onClick={() => props.tagImage(tag)}
-              data-testid={tag + index}
+              data-testid={"tag" + index}
             >
               {tag}
             </Button>
@@ -33,6 +33,7 @@ const ImageCard = (props) => {
               type="button"
               className="btn btn-danger delete"
               onClick={() => props.delete(props.photoID)}
+              data-testid="deleteBtn"
             >
               Delete
             </button>

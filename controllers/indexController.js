@@ -49,7 +49,7 @@ app.post("/signup", (req, res) => {
                   expiresIn: "5h",
                 },
                 (err, token) => {
-                  res.json({
+                  res.status(200).json({
                     success: true,
                     token: "Bearer " + token,
                   });
@@ -87,7 +87,7 @@ app.post("/login", function (req, res) {
               expiresIn: "5h",
             },
             (err, token) => {
-              res.json({
+              res.status(200).json({
                 success: true,
                 token: "Bearer " + token,
               });
@@ -95,8 +95,8 @@ app.post("/login", function (req, res) {
           );
         } else {
           return res
-            .status(400)
-            .json({ message: "Invalid username or password!", error: err });
+            .status(401)
+            .json({ message: "Invalid username or password!" });
         }
       });
     }

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import ImageCard from "./ImageCard";
 import { render, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import logo from "../../assets/images/logo.png";
 
 afterEach(cleanup);
 
@@ -56,6 +57,54 @@ it("renders tags correctly", () => {
   const { getByTestId } = render(
     <ImageCard tags={tags} caption="" src="" ownerName="" photoID="" />
   );
-  expect(getByTestId("puppy0")).toHaveTextContent("puppy");
-  expect(getByTestId("animal1")).toHaveTextContent("animal");
+  expect(getByTestId("tag0")).toHaveTextContent("puppy");
+  expect(getByTestId("tag1")).toHaveTextContent("animal");
+});
+
+it("doesn't display delete button for images not owned by current user", () => {
+  const tags = [];
+  const { queryByTestId } = render(
+    <ImageCard
+      tags={tags}
+      caption=""
+      src=""
+      ownerName=""
+      photoID=""
+      ownerID="00"
+      userID="01"
+    />
+  );
+  expect(queryByTestId("deleteBtn")).toBeNull();
+});
+
+it("displays delete button for images owned by current user", () => {
+  const tags = [];
+  const { queryByTestId } = render(
+    <ImageCard
+      tags={tags}
+      caption=""
+      src=""
+      ownerName=""
+      photoID=""
+      ownerID="00"
+      userID="00"
+    />
+  );
+  expect(queryByTestId("deleteBtn")).toBeTruthy();
+});
+
+it("displays correct owner name", () => {
+  const tags = [];
+  const { getByTestId } = render(
+    <ImageCard tags={tags} caption="" src="" ownerName="Mary" photoID="" />
+  );
+  expect(getByTestId("ownerName")).toHaveTextContent("Mary");
+});
+
+it("renders correct image", () => {
+  const tags = [];
+  const { getByTestId } = render(
+    <ImageCard tags={tags} caption="" src={logo} ownerName="" photoID="" />
+  );
+  expect(getByTestId("image")).toHaveAttribute("src", logo);
 });
