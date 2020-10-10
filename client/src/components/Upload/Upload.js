@@ -7,7 +7,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../store/actions";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logoBlack.png";
 
 class Upload extends Component {
   constructor() {

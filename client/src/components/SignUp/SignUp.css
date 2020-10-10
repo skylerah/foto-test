@@ -3,7 +3,7 @@
 .auth-inner {
   width: 450px;
   margin: auto;
-  background: #ffffff;
+  background: #ffdad6;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 body {
-  background: #25664b !important;
+  background: #fff !important;
   min-height: 100vh;
   display: flex;
   font-weight: 400;
@@ -76,12 +76,12 @@ html,
   text-align: right;
   font-size: 13px;
   padding-top: 10px;
-  color: #7f7d7d;
+  color: black;
   margin: 0;
 }
 
 .forgot-password a {
-  color: #25664b;
+  color: black;
 }
 
 .forgot-password a:hover {
@@ -90,12 +90,12 @@ html,
 
 .alreadyExists {
   margin-bottom: 2rem;
-  color: red;
+  color: #fff;
   text-align: center;
 }
 
 .bottom-link {
-  color: #25664b;
+  color: #fff;
 }
 
 .bottom-link:hover {
@@ -106,7 +106,8 @@ html,
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:visited {
-  background-color: #25664b !important;
+  background-color: #fff !important;
+  color: black !important;
 }
 
 .logo-black {

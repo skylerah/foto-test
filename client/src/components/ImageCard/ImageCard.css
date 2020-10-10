@@ -2,7 +2,7 @@
   margin: 0.5rem;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #ffdad6;
   border-radius: 1rem;
   width: 18rem;
   box-sizing: border-box;
@@ -20,32 +20,33 @@ img {
   margin-top: 0.3rem;
   height: 3rem;
   text-align: center;
-  font-family: "Delius Swash Caps", cursive;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .tagBtn {
   margin-left: 0.2rem;
   font-size: 1.1rem;
   margin-top: 0.3rem;
-  background-color: #25664b !important;
+  background-color: #fff !important;
+  color: black !important;
   height: 2rem;
   text-align: center;
   padding-top: 0px;
-  font-family: "Delius Swash Caps", cursive;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .profile-link {
-  color: #25664b;
+  color: black;
 }
 
 .profile-link:hover {
-  color: black;
+  color: #fff;
 }
 
 .shared-text {
   float: right;
   margin-right: 0.2rem;
-  font-family: "Delius Swash Caps", cursive;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .shared-container {
@@ -58,8 +59,8 @@ img {
 .imgcardBtn {
   background: none;
   border: none;
-  color: #25664b;
-  font-family: "Delius Swash Caps", cursive;
+  color: black;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .imgcardBtn:hover {
@@ -71,7 +72,7 @@ img {
   border: 0 !important;
   border-radius: 8px !important;
   margin-left: 0.5rem;
-  font-family: "Delius Swash Caps", cursive;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .img-footer {
