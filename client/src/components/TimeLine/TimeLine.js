@@ -34,59 +34,28 @@ class TimeLine extends Component {
     this.search();
   };
 
-  //merge two arrays together with no duplicates
-  mergeArrays = (array1, array2) => {
-    var result = array1;
-    for (var i = 0; i < array2.length; i++) {
-      if (result.indexOf(array2[i]) < 0) {
-        result.push(array2[i]);
-      }
-    }
-    return result;
-  };
-
   search = () => {
     //get all images
     axios.get("/photos").then((response) => {
       const images = response.data;
       const caption = this.state.search.toLowerCase();
-      //remove images that don't satisfy our search by caption
+
+      //remove images that don't satisfy our search by caption or tag
       const filteredImages = images.filter(function (image) {
         return (
           image.caption.toLowerCase().includes(caption) ||
-          caption.includes(image.caption.toLowerCase())
+          caption.includes(image.caption.toLowerCase()) ||
+          image.tags.some((tag) => {
+            return caption.includes(tag) || tag.toLowerCase().includes(caption);
+          })
         );
       });
 
-      //remove images that don't satisfy our search by tags
-      const filteredImagesByTags = images.filter(
-        this.searchTags.bind(this, caption)
-      );
-
-      //merge image search results for caption and tags
-      const searchResults = this.mergeArrays(
-        filteredImages,
-        filteredImagesByTags
-      );
-
       //update state with new images
       this.setState({
-        images: searchResults,
+        images: filteredImages,
       });
     });
-  };
-
-  //search list of tags
-  searchTags = (caption, image) => {
-    for (let i = 0; i < image.tags.length; i++) {
-      if (
-        image.tags[i].toLowerCase().includes(caption) ||
-        caption.includes(image.tags[i].toLowerCase())
-      ) {
-        return true;
-      }
-    }
-    return false;
   };
 
   //search for exact tag
