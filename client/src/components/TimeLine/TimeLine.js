@@ -61,17 +61,7 @@ class TimeLine extends Component {
   //search for exact tag
   searchExactTags = (tag, image) => {
     for (let i = 0; i < image.tags.length; i++) {
-      if (image.tags[i] === tag) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  //search images by filename
-  searchImages = (userImages, image) => {
-    for (let i = 0; i < userImages.length; i++) {
-      if (image.filename === userImages[i]) {
+      if (image.tags[i].toLowerCase() === tag.toLowerCase()) {
         return true;
       }
     }

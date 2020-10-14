@@ -50,7 +50,7 @@ class Upload extends Component {
           data.tags = this.state.tags;
           data.ownerName = this.props.reducer.user.name;
           data.ownerID = this.props.reducer.user.id;
-          data.email = this.props.reducer.user.email;
+
           axios.post("/photo", data).then(
             () => {
               this.props.history.push("/timeline");

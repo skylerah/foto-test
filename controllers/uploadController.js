@@ -45,10 +45,12 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
+//upload single image to database
 app.post("/upload", upload.single("img"), (req, res, err) => {
   res.json({ file: req.file });
 });
 
+//retrieve single image
 app.get("/image/:filename", (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
@@ -71,6 +73,7 @@ app.get("/image/:filename", (req, res) => {
   });
 });
 
+//add new photo to database
 app.post("/photo", (req, res) => {
   const newPhoto = new Photo({
     id: req.body.id,
@@ -91,6 +94,7 @@ app.post("/photo", (req, res) => {
   });
 });
 
+//get all photos
 app.get("/photos", (req, res) => {
   Photo.find({}, function (err, photos) {
     if (err) {
@@ -100,6 +104,7 @@ app.get("/photos", (req, res) => {
   });
 });
 
+//get all photos uplaoded by a particular user
 app.get("/images/:id", (req, res) => {
   Photo.find({ ownerID: req.params.id }, function (err, photos) {
     if (err) {
@@ -111,12 +116,13 @@ app.get("/images/:id", (req, res) => {
   });
 });
 
+//delete a particular image from database
 app.delete("/image/:id", (req, res) => {
   gfs.remove({ _id: req.params.id, root: "uploads" }, (err, gridStore) => {
     if (err) {
       return res.status(500).json({ err: "oops something bad happened!" });
     }
-    console.log("gridstore", gridStore);
+
     Photo.findOneAndDelete({ id: req.params.id }, function (err, photo) {
       if (err) {
         return res.status(500).json({ err: "oops something bad happened!" });

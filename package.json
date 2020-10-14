@@ -35,7 +35,7 @@
     "server": "nodemon index.js --exec babel-node --presets babel-preset-env",
     "start": "node index.js",
     "client": "npm start --prefix client",
-    "client-test": "cd client && npm run test",
+    "client-test": "cd client && npm run test a",
     "dev-test": "concurrently \"npm run test\" \"npm run client-test\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "mocha",

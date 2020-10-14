@@ -5,7 +5,6 @@ const isEmpty = require("is-empty");
 const initialState = {
   isAuthenticated: false,
   user: {},
-  loading: false,
   error: "",
 };
 
