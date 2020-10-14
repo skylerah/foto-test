@@ -6,7 +6,7 @@ const ImageCard = (props) => {
   return (
     <div className="imgCard">
       <div>
-        <img src={props.src} alt={props.caption} />
+        <img src={props.src} alt={props.caption} data-testid="image" />
       </div>
       <div className="caption">
         <p data-testid="caption">{props.caption}</p>
@@ -19,30 +19,31 @@ const ImageCard = (props) => {
               variant="secondary"
               key={index}
               onClick={() => props.tagImage(tag)}
-              data-testid={tag + index}
+              data-testid={"tag" + index}
             >
               {tag}
             </Button>
           ))}
         </div>
       )}
-      <div className="img-footer">
+      <div className="img__footer">
         {props.ownerID === props.userID && (
           <div>
             <button
               type="button"
               className="btn btn-danger delete"
               onClick={() => props.delete(props.photoID)}
+              data-testid="deleteBtn"
             >
               Delete
             </button>
           </div>
         )}
-        <div className="shared-container">
-          <p data-testid="shared" className="shared-text">
+        <div className="shared__container">
+          <p data-testid="shared" className="shared__text">
             shared by
           </p>
-          <button className="imgcardBtn" onClick={props.userImage}>
+          <button className="imgcard__btn" onClick={props.userImage}>
             <p data-testid="ownerName">{props.ownerName}</p>
           </button>
         </div>

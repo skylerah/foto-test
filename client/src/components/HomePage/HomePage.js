@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import SignUp from "../SignUp/SignUp";
 import TimeLine from "../TimeLine/TimeLine";
 import Upload from "../Upload/Upload";
+import NotFound from "../NotFound/NotFound";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../../store/actions";
@@ -38,6 +39,7 @@ const HomePage = () => {
         <Route path="/sign-up" component={SignUp} />
         <PrivateRoute exact path="/timeline" component={TimeLine} />
         <PrivateRoute exact path="/upload" component={Upload} />
+        <Route component={NotFound} />
       </Switch>
     </Router>
   );

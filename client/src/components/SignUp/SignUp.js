@@ -48,13 +48,12 @@ class SignUp extends Component {
     return (
       <div>
         <div className="App">
-          <div className="auth-wrapper">
-            <img className="logo-black" src={logo} alt="logo" />
-            <div className="auth-inner">
+          <div className="auth__wrapper">
+            <img className="logo__black" src={logo} alt="logo" />
+            <div className="auth__inner">
               {this.props.reducer.error && (
                 <p className="alreadyExists">
                   {this.props.reducer.error + " "}
-                  <a href="/">sign in?</a>
                 </p>
               )}
               <form onSubmit={this.handleSubmit}>
@@ -107,10 +106,10 @@ class SignUp extends Component {
                 <button type="submit" className="btn btn-primary btn-block">
                   Sign Up
                 </button>
-                <Link className="nav-link" to={"/"}>
-                  <p className="forgot-password text-right">
+                <Link className="nav__link" to={"/"}>
+                  <p className="forgot__password text-right">
                     Already registered{" "}
-                    <a href="/" className="bottom-link">
+                    <a href="/" className="bottom__link">
                       sign in?
                     </a>
                   </p>

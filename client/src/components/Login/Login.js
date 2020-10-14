@@ -45,11 +45,11 @@ class Login extends Component {
     return (
       <div>
         <div className="App">
-          <div className="auth-wrapper">
-            <img className="logo-black" src={logo} alt="logo" />
-            <div className="auth-inner">
-              {this.props.error.length > 0 && (
-                <p className="login-error">{this.props.error}</p>
+          <div className="auth__wrapper">
+            <img className="logo__black" src={logo} alt="logo" />
+            <div className="auth__inner">
+              {this.props.error && this.props.error.length > 0 && (
+                <p className="login__error">{this.props.error}</p>
               )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign In</h3>
@@ -61,6 +61,7 @@ class Login extends Component {
                     className="form-control"
                     placeholder="Enter email"
                     onChange={(e) => this.handleChange(e, "email")}
+                    data-testid="email"
                     value={this.state.email}
                   />
                 </div>
@@ -69,6 +70,7 @@ class Login extends Component {
                   <label>Password</label>
                   <input
                     type="password"
+                    data-testid="password"
                     className="form-control"
                     placeholder="Enter password"
                     onChange={(e) => this.handleChange(e, "password")}
@@ -95,11 +97,11 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-block">
                   Submit
                 </button>
-                <div className="alt-suggestions">
-                  <p className="forgot-password text-left">
+                <div className="alt__suggestions">
+                  <p className="forgot__password text-left">
                     Don't have an account? <a href="/sign-up">Sign Up</a>
                   </p>
-                  <p className="forgot-password text-right">
+                  <p className="forgot__password text-right">
                     Forgot <a href="/">password?</a>
                   </p>
                 </div>

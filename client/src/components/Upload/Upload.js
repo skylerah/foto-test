@@ -7,7 +7,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../store/actions";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logoBlack.png";
 
 class Upload extends Component {
   constructor() {
@@ -50,7 +50,7 @@ class Upload extends Component {
           data.tags = this.state.tags;
           data.ownerName = this.props.reducer.user.name;
           data.ownerID = this.props.reducer.user.id;
-          data.email = this.props.reducer.user.email;
+
           axios.post("/photo", data).then(
             () => {
               this.props.history.push("/timeline");
@@ -93,8 +93,8 @@ class Upload extends Component {
   render() {
     return (
       <div>
-        <nav className="navigation-bar-list">
-          <div className="my-info">
+        <nav className="navigation__bar__list">
+          <div className="my__info">
             <a href="/timeline">
               <img src={logo} alt="logo" className="logo" />
             </a>
@@ -103,23 +103,23 @@ class Upload extends Component {
             )}
           </div>
           <div>
-            <button className="navbar-link" onClick={this.logout}>
+            <button className="navbar__link" onClick={this.logout}>
               Log Out
             </button>
           </div>
         </nav>
-        <div className="upload-container">
+        <div className="upload__container">
           {this.state.error.length > 0 && (
-            <p className="upload-error">{this.state.error}</p>
+            <p className="upload__error">{this.state.error}</p>
           )}
-          <h2 className="upload-title">Upload a picture</h2>
-          <div className="form-container">
+          <h2 className="upload__title">Upload a picture</h2>
+          <div className="form__container">
             <form
               encType="multipart/form-data"
               onSubmit={this.post}
-              className="form-content"
+              className="form__content"
             >
-              <div className="custom-file inputfile-container">
+              <div className="custom-file inputfile__container">
                 <input
                   type="file"
                   className="custom-file-input input"
@@ -131,17 +131,17 @@ class Upload extends Component {
                   {this.state.filename ? this.state.filename : "Choose File"}
                 </label>
               </div>
-              <div className="caption-container">
+              <div className="caption__container">
                 <input
                   type="text"
                   onChange={this.handleCaptionChange}
                   value={this.state.caption}
-                  className="caption-input"
+                  className="caption__input"
                   placeholder="  Enter a caption for your image"
                   maxLength="50"
                 />
               </div>
-              <div className="tag-input">
+              <div className="tag__input">
                 <ReactTagInput
                   placeholder="Enter tags to categorize/describe your image"
                   tags={this.state.tags}
@@ -150,7 +150,7 @@ class Upload extends Component {
                 />
               </div>
 
-              <button type="submit" className="upload-btn">
+              <button type="submit" className="upload__btn">
                 Upload
               </button>
             </form>

@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
 
-.auth-inner {
+.auth__inner {
   width: 450px;
   margin: auto;
-  background: #ffffff;
+  background: #bdb3b7;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 body {
-  background: #25664b !important;
+  background: #fff !important;
   min-height: 100vh;
   display: flex;
   font-weight: 400;
@@ -38,29 +38,29 @@ body,
 html,
 .App,
 #root,
-.auth-wrapper {
+.auth__wrapper {
   width: 100%;
   height: 100%;
 }
 
-.navbar-light {
+.navbar__light {
   background-color: #ffffff;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 }
 
-.auth-wrapper {
+.auth__wrapper {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: left;
 }
 
-.auth-wrapper .form-control:focus {
+.auth__wrapper .form-control:focus {
   border-color: #167bff;
   box-shadow: none;
 }
 
-.auth-wrapper h3 {
+.auth__wrapper h3 {
   text-align: center;
   margin: 0;
   line-height: 1;
@@ -76,29 +76,29 @@ html,
   text-align: right;
   font-size: 13px;
   padding-top: 10px;
-  color: #7f7d7d;
+  color: black;
   margin: 0;
 }
 
-.forgot-password a {
-  color: #25664b;
+.forgot__password a {
+  color: black;
 }
 
-.forgot-password a:hover {
+.forgot__password a:hover {
   color: black;
 }
 
 .alreadyExists {
   margin-bottom: 2rem;
-  color: red;
+  color: #fff;
   text-align: center;
 }
 
-.bottom-link {
-  color: #25664b;
+.bottom__link {
+  color: #fff;
 }
 
-.bottom-link:hover {
+.bottom__link:hover {
   color: black;
 }
 
@@ -106,10 +106,11 @@ html,
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:visited {
-  background-color: #25664b !important;
+  background-color: #fff !important;
+  color: black !important;
 }
 
-.logo-black {
+.logo__black {
   width: 30rem;
   height: 4rem;
   align-self: center;

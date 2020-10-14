@@ -7,7 +7,6 @@ const app = express();
 const crypto = require("crypto");
 const Grid = require("gridfs-stream");
 const Photo = require("../models/Photo");
-const User = require("../models/User");
 const path = require("path");
 
 if (process.env.NODE_ENV !== "production") {
@@ -46,10 +45,12 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
+//upload single image to database
 app.post("/upload", upload.single("img"), (req, res, err) => {
   res.json({ file: req.file });
 });
 
+//retrieve single image
 app.get("/image/:filename", (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
@@ -65,13 +66,14 @@ app.get("/image/:filename", (req, res) => {
       const readstream = gfs.createReadStream(file.filename);
       readstream.pipe(res);
     } else {
-      res.status(404).json({
+      res.status(400).json({
         err: "Not an image",
       });
     }
   });
 });
 
+//add new photo to database
 app.post("/photo", (req, res) => {
   const newPhoto = new Photo({
     id: req.body.id,
@@ -82,33 +84,17 @@ app.post("/photo", (req, res) => {
     ownerID: req.body.ownerID,
   });
 
-  res.setHeader("Content-Type", "application/json");
-  newPhoto.save(function (err) {
+  newPhoto.save(function (err, photo) {
     if (err) {
       var error = "Oops something bad happened! Try again";
-      res.status(400).send(error);
-    } else {
-      User.findOne({ email: req.body.email }, function (err, user) {
-        if (err) {
-          return res.status(400).json({ err: "Bad request" });
-        }
-        const images = user.images;
-        images.push(req.body.filename);
-        User.findOneAndUpdate({ email: user.email }, { images }, function (
-          err,
-          updatedUser
-        ) {
-          if (err) {
-            return res.status(400).json({ err: "Bad request" });
-          }
-          error = "successfully saved photo!";
-          return res.status(200).send(updatedUser);
-        });
-      });
+      return res.status(500).send(error);
     }
+
+    return res.status(200).json(photo);
   });
 });
 
+//get all photos
 app.get("/photos", (req, res) => {
   Photo.find({}, function (err, photos) {
     if (err) {
@@ -118,23 +104,11 @@ app.get("/photos", (req, res) => {
   });
 });
 
-app.post("/images/my-images", (req, res) => {
-  User.findOne({ email: req.body.email }, function (err, user) {
-    if (err) {
-      return res.status(400).json({ err: "Bad request" });
-    } else if (!user) {
-      return res.status(400).json({ err: "user not found" });
-    }
-    return res.status(200).json({
-      userImages: user.images,
-    });
-  });
-});
-
+//get all photos uplaoded by a particular user
 app.get("/images/:id", (req, res) => {
   Photo.find({ ownerID: req.params.id }, function (err, photos) {
     if (err) {
-      return res.status(400).json({ err: "user not found" });
+      return res.status(500).json({ err: "oops something bad happened!" });
     }
     return res.status(200).json({
       userImages: photos,
@@ -142,45 +116,26 @@ app.get("/images/:id", (req, res) => {
   });
 });
 
+//delete a particular image from database
 app.delete("/image/:id", (req, res) => {
   gfs.remove({ _id: req.params.id, root: "uploads" }, (err, gridStore) => {
     if (err) {
-      return res.status(404).json({ err: "image not found" });
+      return res.status(500).json({ err: "oops something bad happened!" });
     }
+
     Photo.findOneAndDelete({ id: req.params.id }, function (err, photo) {
       if (err) {
-        return res.status(400).json({ err: "Photo not found" });
+        return res.status(500).json({ err: "oops something bad happened!" });
       }
 
-      const userID = photo.ownerID;
-      const filename = photo.filename;
-      User.findOne({ _id: userID }, function (err, user) {
-        if (err) {
-          return res.status(400).json({ err: "Bad request" });
-        } else if (!user) {
-          return res.status(400).json({ err: "user not found" });
-        }
-        const images = user.images;
-        const newImages = images.filter(function (image) {
-          return image !== filename;
-        });
-        User.findOneAndUpdate({ _id: userID }, { images: newImages }, function (
-          err,
-          updatedUser
-        ) {
-          if (err) {
-            return res.status(400).json({ err: "Bad request" });
-          } else if (!updatedUser) {
-            return res.status(400).json({ err: "user not found" });
-          }
-          const userDeleted = updatedUser;
-          userDeleted["password"] = "";
-          return res.status(200).json({
-            status: "Successfully deleted!",
-            photo: photo,
-            user: userDeleted,
-          });
-        });
+      if (!photo) {
+        return res.status(404).json({ err: "photo not found" });
+      }
+
+      return res.status(200).json({
+        status: "Successfully deleted!",
+        photo: photo,
+        gridStore,
       });
     });
   });
